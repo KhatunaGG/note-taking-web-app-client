@@ -1,4 +1,5 @@
 import React from "react";
+import { Eye } from "../../__atoms";
 
 const EmailInput = () => {
   return (
