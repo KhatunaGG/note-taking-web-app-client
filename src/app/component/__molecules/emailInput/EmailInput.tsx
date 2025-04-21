@@ -1,7 +1,24 @@
-import React from "react";
-import { Eye } from "../../__atoms";
+"use client";
+import { SignUpType } from "../../__organism/form/Form";
+import {
+  FieldError,
+  FieldErrors,
+  FieldValues,
+  Path,
+  UseFormRegister,
+} from "react-hook-form";
 
-const EmailInput = () => {
+export type EmailInputPropsType<T extends FieldValues> = {
+  register: UseFormRegister<SignUpType>;
+  errors: FieldErrors<T>;
+  fieldName: Path<T>;
+};
+
+const EmailInput = ({
+  register,
+  errors,
+  fieldName,
+}: EmailInputPropsType<SignUpType>) => {
   return (
     <div className="w-full flex flex-col gap-[6px]">
       <label className="text-sm font-medium text-darkest">Email Address</label>
@@ -9,7 +26,14 @@ const EmailInput = () => {
         type="text"
         className="border border-[#CACFD8] rounded-lg p-3 outline-none text-neutral"
         placeholder="email@example.com"
+        {...register(fieldName)}
       />
+
+      {errors[fieldName] && (
+        <span className="text-red-500 text-sm">
+          {errors[fieldName]?.message?.toString()}
+        </span>
+      )}
     </div>
   );
 };
