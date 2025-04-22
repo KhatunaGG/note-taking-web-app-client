@@ -1,59 +1,46 @@
 "use client";
-import { useForm } from "react-hook-form";
-import { GoogleIcon, GoogleText } from "../../__atoms";
-import { EmailInput, PasswordInput } from "../../__molecules";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useSignUpStore } from "@/app/store/sign-up-store";
-import { useEffect } from "react";
+import { EmailInput, PasswordInput } from "../../__molecules";
+import { useForm } from "react-hook-form";
+import { GoogleIcon, GoogleText } from "../../__atoms";
+import { useSignInStore } from "@/app/store/sign-in-store";
 import { useRouter } from "next/navigation";
 
-export const signUpSchema = z.object({
-  email: z.string().min(1, "Email is requeued"),
-  password: z
+export const signInSchema = z.object({
+  signInEmail: z.string().min(1, "Email is requeued"),
+  signInPassword: z
     .string()
     .min(1, "Password must be at least 4 characters")
     .max(15, "Password must be less then 15 characters"),
 });
 
-export type SignUpType = z.infer<typeof signUpSchema>;
+export type SignInType = z.infer<typeof signInSchema>;
 
-// export interface IForm {
-//   isSignInPage?: boolean;
-// }
-
-const Form = () => {
-  const { signUp, success } = useSignUpStore();
-  const router = useRouter()
-  console.log(success, "success");
-
-
+const SignInForm = () => {
+  const { signIn } = useSignInStore();
+  const router = useRouter();
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
-  } = useForm<SignUpType>({
-    resolver: zodResolver(signUpSchema),
+  } = useForm<SignInType>({
+    resolver: zodResolver(signInSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      signInEmail: "",
+      signInPassword: "",
     },
   });
 
-  // useEffect(() => {
-  //   if (success) {
-  //     reset();
-  //   }
-  // }, [success, reset]);
-
-  const onSubmit = async (formData: SignUpType) => {
+  const onSubmit = async (formData: SignInType) => {
     if (Object.keys(errors).length > 0) return;
-    await signUp(formData);
-    const success = useSignUpStore.getState().success;
+
+    await signIn(formData);
+    const success = useSignInStore.getState().success;
     if (success) {
-      reset()
-      router.push("/sign-in")
+      reset();
+      router.push("/");
     }
   };
 
@@ -66,19 +53,19 @@ const Form = () => {
         <EmailInput
           register={register}
           errors={errors}
-          fieldName="email"
+          fieldName="signInEmail"
         />
         <PasswordInput
           register={register}
           errors={errors}
-          fieldName="password"
+          fieldName="signInPassword"
         />
         <button
           type="submit"
           disabled={isSubmitting}
           className="w-full font-semibold text-base text-white py-[12.5px] rounded-lg bg-[#335CFF] hover:scale-105 transition-transform duration-300 ease-in-out"
         >
-          Sign up
+          Sign in
         </button>
       </div>
 
@@ -98,4 +85,4 @@ const Form = () => {
   );
 };
 
-export default Form;
+export default SignInForm;
