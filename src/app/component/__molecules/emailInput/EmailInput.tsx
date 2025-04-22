@@ -9,16 +9,17 @@ import {
 } from "react-hook-form";
 
 export type EmailInputPropsType<T extends FieldValues> = {
-  register: UseFormRegister<SignUpType>;
+  register: UseFormRegister<T>;
   errors: FieldErrors<T>;
   fieldName: Path<T>;
-};
 
-const EmailInput = ({
+};
+const EmailInput = <T extends FieldValues>({
   register,
   errors,
   fieldName,
-}: EmailInputPropsType<SignUpType>) => {
+
+}: EmailInputPropsType<T>) => {
   return (
     <div className="w-full flex flex-col gap-[6px]">
       <label className="text-sm font-medium text-darkest">Email Address</label>
