@@ -1,12 +1,11 @@
 "use client";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import SignInForm from "../signInForm/SignInForm";
 import Link from "next/link";
 import { Title } from "../../__molecules";
 
 const SignIn = () => {
   const path = usePathname();
-  const router = useRouter();
   const isSignInPage = path === "/sign-in";
 
   return (

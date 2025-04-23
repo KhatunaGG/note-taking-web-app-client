@@ -6,6 +6,7 @@ import {
   UseFormRegister,
 } from "react-hook-form";
 import { Eye, InfoCircle } from "../../__atoms";
+import Link from "next/link";
 
 export type PasswordInputPropsType<T extends FieldValues> = {
   register: UseFormRegister<T>;
@@ -22,12 +23,15 @@ const PasswordInput = <T extends FieldValues>({
     <div className="w-full flex flex-col gap-[6px]">
       <div className="w-full flex items-center justify-between">
         <label className="text-sm font-medium text-darkest">Password</label>
-        <button
-          type="button"
-          className="text-xs font-normal font-[#525866] underline cursor-pointer hover:transition-transform duration-300 ease-in-out hover:scale-105"
-        >
-          Forgot
-        </button>
+
+        <Link href={"/forgot-password"}>
+          <button
+            type="button"
+            className="text-xs font-normal font-[#525866] underline cursor-pointer hover:transition-transform duration-300 ease-in-out hover:scale-105"
+          >
+            Forgot
+          </button>
+        </Link>
       </div>
 
       <div className="w-full relative">
