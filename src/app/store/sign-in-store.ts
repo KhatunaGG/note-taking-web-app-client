@@ -4,7 +4,7 @@ import { axiosInstance } from "../libs/axiosInstance";
 import axios, { AxiosError } from "axios";
 import { toast } from "react-toastify";
 import { ErrorResponse } from "../interface";
-import { setCookie } from "cookies-next";
+import { deleteCookie, getCookie, setCookie } from "cookies-next";
 
 const handleApiError = (error: AxiosError<ErrorResponse>): string => {
   if (axios.isAxiosError(error)) {
@@ -17,6 +17,12 @@ const handleApiError = (error: AxiosError<ErrorResponse>): string => {
   return unexpectedError;
 };
 
+export interface IUser {
+  _id: string;
+  email: string;
+  createdAt: Date;
+}
+
 export interface ISignInStore {
   isLoading: boolean;
   axiosError: string;
@@ -24,13 +30,18 @@ export interface ISignInStore {
   signInPassword: string;
   success: boolean;
   accessToken: string | null;
+  currentUser: IUser | null;
 
+  setCurrentUser: (currentUser: IUser | null) => void;
   setAccessToken: (token: string) => void;
   setSuccess: (success: boolean) => void;
   setFormData: (signInEmail: string, signInPassword: string) => void;
   setIsLoading: (isLoading: boolean) => void;
   setAxiosError: (axiosError: string) => void;
   signIn: (formData: SignInType) => void;
+  initialize: () => Promise<void>;
+  getCurrentUser: (accessToken: string | undefined) => void;
+  logout: () => void;
 }
 
 export const useSignInStore = create<ISignInStore>((set) => ({
@@ -40,6 +51,7 @@ export const useSignInStore = create<ISignInStore>((set) => ({
   signInPassword: "",
   success: false,
   accessToken: null,
+  currentUser: null,
 
   setAccessToken: (token: string) => set({ accessToken: token }),
   setSuccess: (success) => set({ success }),
@@ -47,6 +59,7 @@ export const useSignInStore = create<ISignInStore>((set) => ({
     set({ signInEmail, signInPassword }),
   setIsLoading: (isLoading) => set({ isLoading }),
   setAxiosError: (axiosError) => set({ axiosError }),
+  setCurrentUser: (currentUser: IUser | null) => set({ currentUser }),
 
   signIn: async (formData) => {
     const { signInEmail, signInPassword } = formData;
@@ -69,5 +82,37 @@ export const useSignInStore = create<ISignInStore>((set) => ({
     } finally {
       set({ isLoading: false, axiosError: "" });
     }
+  },
+  initialize: async () => {
+    const token = await getCookie("accessToken");
+    await useSignInStore.getState().getCurrentUser(token);
+    if (token) {
+      set({ accessToken: token });
+    } else {
+      window.location.href = "/sign-up";
+    }
+  },
+
+  getCurrentUser: async (accessToken: string | undefined) => {
+    if (!accessToken) return;
+    try {
+      const res = await axiosInstance.get("/auth/current-user", {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+      if (res.status >= 200 && res.status <= 204) {
+        const user: IUser = res.data;
+        set({ currentUser: user });
+      }
+    } catch (e) {
+      const errorMessage = handleApiError(e as AxiosError<ErrorResponse>);
+      set({ axiosError: errorMessage });
+    }
+  },
+
+  logout: () => {
+    deleteCookie("accessToken");
+    set({ currentUser: null, accessToken: "" });
+    console.log("State reset complete");
+    window.location.href = "/sign-up";
   },
 }));
