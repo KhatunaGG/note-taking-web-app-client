@@ -6,3 +6,4 @@ export { default as Dashboard } from "./dashboard/Dashboard";
 export { default as ForgotPassword } from "./forgotPassword/ForgotPassword";
 export { default as ForgotPasswordForm } from "./ForgotPasswordForm/ForgotPasswordForm";
 export { default as ResetPassword } from "./resetPassword/ResetPassword";
+export { default as ResetPasswordForm } from "./resetPasswordFrom/ResetPasswordForm"

@@ -40,12 +40,14 @@ export const useChangePasswordStore = create<IChangePassword>((set) => ({
       });
       if (res.status >= 200 && res.status <= 204) {
         set({ success: true, resendEmail: "" });
+
+        console.log(resendEmail, "resendEmail from store")
       }
     } catch (e) {
       const errorMessage = handleApiError(e as AxiosError<ErrorResponse>);
       set({ axiosError: errorMessage });
     } finally {
-      set({ isLoading: false, axiosError: "" });
+      set({ isLoading: false, axiosError: "", resendEmail: "" });
     }
   },
 }));
