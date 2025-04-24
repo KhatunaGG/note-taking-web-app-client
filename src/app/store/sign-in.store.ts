@@ -83,6 +83,7 @@ export const useSignInStore = create<ISignInStore>((set) => ({
       set({ isLoading: false, axiosError: "" });
     }
   },
+
   initialize: async () => {
     const token = await getCookie("accessToken");
     await useSignInStore.getState().getCurrentUser(token);

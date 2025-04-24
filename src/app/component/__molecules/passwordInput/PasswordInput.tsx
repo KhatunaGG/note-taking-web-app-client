@@ -21,6 +21,7 @@ const PasswordInput = <T extends FieldValues>({
   fieldName,
   isSignInPage,
 }: PasswordInputPropsType<T>) => {
+  console.log(fieldName, "fieldName");
   return (
     <div className="w-full flex flex-col gap-[6px]">
       <div className="w-full flex items-center justify-between">
@@ -51,12 +52,21 @@ const PasswordInput = <T extends FieldValues>({
           </span>
         )}
       </div>
-      <div className="flex items-center gap-2">
+      {(fieldName === "password" ||
+       fieldName === "newPassword") && (
+          <div className="flex items-center gap-2">
+            <InfoCircle />
+            <p className="text-[#525866] font-normal text-xs">
+              At least 8 characters
+            </p>
+          </div>
+        )}
+      {/* <div className="flex items-center gap-2">
         <InfoCircle />
         <p className="text-[#525866] font-normal text-xs">
           At least 8 characters
         </p>
-      </div>
+      </div> */}
     </div>
   );
 };

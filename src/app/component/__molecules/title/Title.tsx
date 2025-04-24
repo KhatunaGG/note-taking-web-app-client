@@ -4,9 +4,14 @@ import Image from "next/image";
 export type TitlePropsType = {
   isSignInPage?: boolean;
   isForgotPassword?: boolean;
+  isResetPassword?: boolean;
 };
 
-const Title = ({ isSignInPage, isForgotPassword }: TitlePropsType) => {
+const Title = ({
+  isSignInPage,
+  isForgotPassword,
+  isResetPassword,
+}: TitlePropsType) => {
   return (
     <>
       <div className="w-full flex items-center justify-center">
@@ -21,6 +26,8 @@ const Title = ({ isSignInPage, isForgotPassword }: TitlePropsType) => {
             ? "Welcome to Note"
             : isForgotPassword
             ? "Forgotten your password?"
+            : isResetPassword
+            ? "Reset Your Password"
             : "Create Your Account"}
         </h1>
         <p className="font-regular text-sm text-[#525866]">
@@ -28,6 +35,8 @@ const Title = ({ isSignInPage, isForgotPassword }: TitlePropsType) => {
             ? " Please log in to continue"
             : isForgotPassword
             ? "Enter your email below, and we’ll send you a link to reset it."
+            : isResetPassword
+            ? "Choose a new password to secure your account."
             : "Sign up to start organizing your notes and boost your productivity."}
         </p>
       </div>

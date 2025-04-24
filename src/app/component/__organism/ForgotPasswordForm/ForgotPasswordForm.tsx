@@ -4,7 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { useChangePasswordStore } from "@/app/store/change-password.store";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export const forgotPasswordSchema = z.object({
   resendEmail: z.string().min(1, "Email is requeued"),
@@ -13,10 +14,11 @@ export const forgotPasswordSchema = z.object({
 export type ForgotPasswordType = z.infer<typeof forgotPasswordSchema>;
 
 const ForgotPasswordForm = () => {
-  const { sendVerificationLink, success } = useChangePasswordStore()
-  const router = useRouter()
+  const { sendVerificationLink, success, resendEmail } =
+    useChangePasswordStore();
+  // const router = useRouter();
 
-
+  console.log(resendEmail, "resendEmail from component");
 
   const {
     register,
@@ -31,13 +33,14 @@ const ForgotPasswordForm = () => {
   });
 
   const onSubmit = async (formData: ForgotPasswordType) => {
-      await sendVerificationLink(formData);
-      if(success) {
-        reset()
-        router.push('/reset-password')
-
-      }
+    await sendVerificationLink(formData);
   };
+
+  useEffect(() => {
+    if (success) {
+      reset();
+    }
+  }, [success, reset]);
 
   return (
     <form
