@@ -1,6 +1,6 @@
 "use client";
 
-import { useSignInStore } from "@/app/store/sign-in-store";
+import { useSignInStore } from "@/app/store/sign-in.store";
 import { useEffect } from "react";
 
 const Dashboard = () => {
