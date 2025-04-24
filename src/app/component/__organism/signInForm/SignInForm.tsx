@@ -4,7 +4,7 @@ import { z } from "zod";
 import { EmailInput, PasswordInput } from "../../__molecules";
 import { useForm } from "react-hook-form";
 import { GoogleIcon, GoogleText } from "../../__atoms";
-import { useSignInStore } from "@/app/store/sign-in-store";
+import { useSignInStore } from "@/app/store/sign-in.store";
 import { useRouter } from "next/navigation";
 
 export const signInSchema = z.object({
@@ -17,7 +17,11 @@ export const signInSchema = z.object({
 
 export type SignInType = z.infer<typeof signInSchema>;
 
-const SignInForm = () => {
+export type SignInFormPropsType = {
+  isSignInPage: boolean
+}
+
+const SignInForm = ({isSignInPage}: SignInFormPropsType) => {
   const { signIn } = useSignInStore();
   const router = useRouter();
   const {
@@ -59,6 +63,7 @@ const SignInForm = () => {
           register={register}
           errors={errors}
           fieldName="signInPassword"
+          isSignInPage={true}
         />
         <button
           type="submit"

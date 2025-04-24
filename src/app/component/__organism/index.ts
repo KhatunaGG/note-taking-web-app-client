@@ -4,4 +4,5 @@ export { default as Form } from "./form/Form";
 export { default as SignInForm } from "./signInForm/SignInForm";
 export { default as Dashboard } from "./dashboard/Dashboard";
 export { default as ForgotPassword } from "./forgotPassword/ForgotPassword";
-export { default as ForgotPasswordForm } from "./ForgotPasswoedForm/ForgotPasswordForm";
+export { default as ForgotPasswordForm } from "./ForgotPasswordForm/ForgotPasswordForm";
+export { default as ResetPassword } from "./resetPassword/ResetPassword";

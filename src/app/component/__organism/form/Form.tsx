@@ -4,7 +4,7 @@ import { GoogleIcon, GoogleText } from "../../__atoms";
 import { EmailInput, PasswordInput } from "../../__molecules";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useSignUpStore } from "@/app/store/sign-up-store";
+import { useSignUpStore } from "@/app/store/sign-up.store";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
