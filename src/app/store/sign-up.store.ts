@@ -56,7 +56,7 @@ export const useSignUpStore = create<ISignUpStore>((set) => ({
       const errorMessage = handleApiError(e as AxiosError<ErrorResponse>);
       set({ axiosError: errorMessage });
     } finally {
-      set({ isLoading: false, axiosError: "" });
+      set({ isLoading: false, axiosError: ""});
     }
   },
 }));

@@ -8,7 +8,10 @@ import { useChangePasswordStore } from "@/app/store/change-password.store";
 import { useEffect } from "react";
 
 export const forgotPasswordSchema = z.object({
-  resendEmail: z.string().min(1, "Email is requeued"),
+  resendEmail: z
+    .string()
+    .min(1, "Email is requeued")
+    .nonempty("Email is required"),
 });
 
 export type ForgotPasswordType = z.infer<typeof forgotPasswordSchema>;

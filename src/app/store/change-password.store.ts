@@ -4,6 +4,7 @@ import axios, { AxiosError } from "axios";
 import { ErrorResponse } from "../interface";
 import { toast } from "react-toastify";
 import { axiosInstance } from "../libs/axiosInstance";
+import { ResetPasswordType } from "../component/__organism/resetPasswordForm/ResetPasswordForm";
 
 const handleApiError = (error: AxiosError<ErrorResponse>): string => {
   if (axios.isAxiosError(error)) {
@@ -21,8 +22,10 @@ export interface IChangePassword {
   axiosError: string;
   resendEmail: string;
   success: boolean;
+  newPassword: string;
 
   sendVerificationLink: (formData: ForgotPasswordType) => void;
+  changePassword: (FormData: ResetPasswordType) => void;
 }
 
 export const useChangePasswordStore = create<IChangePassword>((set) => ({
@@ -30,6 +33,7 @@ export const useChangePasswordStore = create<IChangePassword>((set) => ({
   axiosError: "",
   resendEmail: "",
   success: false,
+  newPassword: "",
 
   sendVerificationLink: async (formData: ForgotPasswordType) => {
     const { resendEmail } = formData;
@@ -50,4 +54,17 @@ export const useChangePasswordStore = create<IChangePassword>((set) => ({
       set({ isLoading: false, axiosError: "", resendEmail: "" });
     }
   },
+
+  changePassword: async (formData: ResetPasswordType) => {
+
+    try {
+      set({isLoading: true, axiosError: ""})
+      
+
+    } catch(e){
+      const errorMessage = handleApiError(e as AxiosError<ErrorResponse>);
+      set({ axiosError: errorMessage });
+    }
+
+  }
 }));

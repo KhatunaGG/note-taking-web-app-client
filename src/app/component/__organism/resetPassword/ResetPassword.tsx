@@ -1,7 +1,7 @@
 "use client";
 import { usePathname } from "next/navigation";
 import { Title } from "../../__molecules";
-import ResetPasswordForm from "../resetPasswordFrom/ResetPasswordForm";
+import ResetPasswordForm from "../resetPasswordForm/ResetPasswordForm";
 
 const ResetPassword = () => {
   const path = usePathname();
