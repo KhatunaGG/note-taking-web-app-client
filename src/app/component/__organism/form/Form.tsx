@@ -9,11 +9,15 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 export const signUpSchema = z.object({
-  email: z.string().min(1, "Email is requeued"),
+  email: z
+    .string()
+    .min(1, "Email is requeued")
+    .nonempty("Email password is required"),
   password: z
     .string()
-    .min(1, "Password must be at least 4 characters")
-    .max(15, "Password must be less then 15 characters"),
+    .min(4, "Password must be at least 4 characters")
+    .max(15, "Password must be less then 15 characters")
+    .nonempty("Password is required"),
 });
 
 export type SignUpType = z.infer<typeof signUpSchema>;
@@ -24,9 +28,8 @@ export type SignUpType = z.infer<typeof signUpSchema>;
 
 const Form = () => {
   const { signUp, success } = useSignUpStore();
-  const router = useRouter()
+  const router = useRouter();
   console.log(success, "success");
-
 
   const {
     register,
@@ -52,10 +55,20 @@ const Form = () => {
     await signUp(formData);
     const success = useSignUpStore.getState().success;
     if (success) {
-      reset()
-      router.push("/sign-in")
+      reset();
+      router.push("/sign-in");
     }
   };
+
+
+
+  //   useEffect(() => {
+  //   if (success) {
+  //     reset();
+  //     router.push("/sign-in");
+  //   }
+  // }, [success, reset]);
+
 
   return (
     <form
@@ -63,11 +76,7 @@ const Form = () => {
       className="w-full pt-6 flex flex-col gap-4"
     >
       <div className="w-full flex flex-col gap-4 ">
-        <EmailInput
-          register={register}
-          errors={errors}
-          fieldName="email"
-        />
+        <EmailInput register={register} errors={errors} fieldName="email" />
         <PasswordInput
           register={register}
           errors={errors}
