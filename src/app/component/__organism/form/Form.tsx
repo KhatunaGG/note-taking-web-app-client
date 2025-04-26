@@ -5,7 +5,6 @@ import { EmailInput, PasswordInput } from "../../__molecules";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useSignUpStore } from "@/app/store/sign-up.store";
-import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 export const signUpSchema = z.object({
@@ -21,10 +20,6 @@ export const signUpSchema = z.object({
 });
 
 export type SignUpType = z.infer<typeof signUpSchema>;
-
-// export interface IForm {
-//   isSignInPage?: boolean;
-// }
 
 const Form = () => {
   const { signUp, success } = useSignUpStore();
@@ -44,12 +39,6 @@ const Form = () => {
     },
   });
 
-  // useEffect(() => {
-  //   if (success) {
-  //     reset();
-  //   }
-  // }, [success, reset]);
-
   const onSubmit = async (formData: SignUpType) => {
     if (Object.keys(errors).length > 0) return;
     await signUp(formData);
@@ -60,15 +49,9 @@ const Form = () => {
     }
   };
 
-
-
-  //   useEffect(() => {
-  //   if (success) {
-  //     reset();
-  //     router.push("/sign-in");
-  //   }
-  // }, [success, reset]);
-
+  const signInWithGoogle = () => {
+    window.location.href = "http://localhost:3003/auth/google";
+  };
 
   return (
     <form
@@ -96,6 +79,7 @@ const Form = () => {
           Or log in with:
         </p>
         <button
+          onClick={signInWithGoogle}
           type="button"
           className="font-semibold text-base text-white py-[12.5px] rounded-lg border border-[#CACFD8] flex items-center justify-center hover:scale-105 transition-transform duration-300 ease-in-out"
         >
