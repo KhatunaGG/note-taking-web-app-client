@@ -21,6 +21,7 @@ export interface IUser {
   _id: string;
   email: string;
   createdAt: Date;
+  avatar: string
 }
 
 export interface ISignInStore {
@@ -113,7 +114,7 @@ export const useSignInStore = create<ISignInStore>((set) => ({
   logout: () => {
     deleteCookie("accessToken");
     set({ currentUser: null, accessToken: "" });
-    console.log("State reset complete");
+    // console.log("State reset complete");
     window.location.href = "/sign-up";
   },
 }));
