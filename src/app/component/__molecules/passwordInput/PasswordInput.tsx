@@ -5,8 +5,9 @@ import {
   Path,
   UseFormRegister,
 } from "react-hook-form";
-import { Eye, InfoCircle } from "../../__atoms";
+import { InfoCircle } from "../../__atoms";
 import Link from "next/link";
+import Eye from "../../__atoms/eye/Eye";
 
 export type PasswordInputPropsType<T extends FieldValues> = {
   register: UseFormRegister<T>;
