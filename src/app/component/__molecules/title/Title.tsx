@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import { Logo } from "../../__atoms";
 
 export type TitlePropsType = {
   isSignInPage?: boolean;
@@ -15,9 +16,10 @@ const Title = ({
   return (
     <>
       <div className="w-full flex items-center justify-center">
-        <div className="w-[95px] h-[28px] relative">
+        {/* <div className="w-[95px] h-[28px] relative">
           <Image src={"/assets/logo.png"} alt={"logo"} fill />
-        </div>
+        </div> */}
+        <Logo />
       </div>
 
       <div className="flex flex-col items-center justify-center gap-2">

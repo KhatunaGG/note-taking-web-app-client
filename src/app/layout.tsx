@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter, Lora } from "next/font/google";
 import "./globals.css";
+import Sidebar from "./component/__organism/sidebar/Sidebar";
 
 const lora = Lora({
   variable: "--font-lora",
@@ -29,9 +30,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${inter.variable} ${geistMono.variable} antialiased `}
-      >
+      <body className={`${inter.variable} ${geistMono.variable} antialiased `}>
         {children}
       </body>
     </html>

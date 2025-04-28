@@ -1,4 +1,11 @@
 export { default as InfoCircle } from "./infoCircle/InfoCircle";
 export { default as GoogleText } from "./googleText/GoogleText";
 export { default as GoogleIcon } from "./googleIcon/GoogleIcon";
-export { default as Eye } from "./eye/Eye";
+export { default as Logo } from "./logo/Logo";
+export { default as Home } from "./home/Home";
+export { default as Archives } from "./archives/Archives";
+export { default as Tag } from "./tag/Tag";
+export { default as search } from "./search/Search";
+export { default as Setting } from "./setting/Setting";
+export { default as Clock } from "./clock/Clock";
+export { default as Delete } from "./delete/Delete";

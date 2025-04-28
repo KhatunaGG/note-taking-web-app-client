@@ -7,3 +7,9 @@ export { default as ForgotPassword } from "./forgotPassword/ForgotPassword";
 export { default as ForgotPasswordForm } from "./ForgotPasswordForm/ForgotPasswordForm";
 export { default as ResetPassword } from "./resetPassword/ResetPassword";
 export { default as ResetPasswordForm } from "./resetPasswordForm/ResetPasswordForm"
+export { default as Header } from "./header/Header"
+export { default as Aside } from "./aside/Aside"
+export { default as Notes } from "./notes/Notes"
+export { default as NoteDetails } from "./noteDetails/NoteDetails"
+export { default as Note } from "./note/Note"
+export { default as Footer } from "./footer/Footer"
