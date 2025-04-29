@@ -1,5 +1,6 @@
 import React from "react";
 import { Archives, Home, Logo, Tag } from "../../__atoms";
+import Link from "next/link";
 
 const Sidebar = () => {
   return (
@@ -11,23 +12,27 @@ const Sidebar = () => {
 
       <div className="flex flex-col gap-2">
         <div className="flex flex-col">
-          <button className="w-full rounded-lg hover:bg-[#F3F5F8] duration-300 easy-in-out text-[#0E121B] font-semibold text-sm px-[15px] py-[11.5px] flex items-center justify-start gap-2">
-            <Home />
-            <p className="text-sm text-[#0E121B]">All Notes</p>
-          </button>
-          <button className="w-full rounded-lg hover:bg-[#F3F5F8] duration-300 easy-in-out text-[#0E121B] font-semibold text-sm px-[15px] py-[11.5px] flex items-center justify-start gap-2">
-            <Archives />
-            <p className="text-sm text-[#0E121B]">Archived Notes</p>
-          </button>
+          <Link href={"/"}>
+            <button className="w-full rounded-lg hover:bg-[#F3F5F8] duration-300 easy-in-out text-[#0E121B] font-semibold text-sm px-[15px] py-[11.5px] flex items-center justify-start gap-2">
+              <Home width={"20px"} height={"20px"} />
+              <p className="text-sm text-[#0E121B]">All Notes</p>
+            </button>
+          </Link>
+          <Link href={"/Archives"}>
+            <button className="w-full rounded-lg hover:bg-[#F3F5F8] duration-300 easy-in-out text-[#0E121B] font-semibold text-sm px-[15px] py-[11.5px] flex items-center justify-start gap-2">
+              <Archives width={"20px"} height={"20px"} />
+              <p className="text-sm text-[#0E121B]">Archived Notes</p>
+            </button>
+          </Link>
         </div>
 
         <div className="border-t border-t-[#E0E4EA]">
           <button className="w-full rounded-lg hover:bg-[#F3F5F8] duration-300 easy-in-out text-[#0E121B] font-semibold text-sm px-[15px] py-[11.5px] flex items-center justify-start gap-2">
-            <Tag />
+            <Tag width={"20px"} height={"20px"} />
             <p className="text-sm text-[#0E121B]">Dev</p>
           </button>
           <button className="w-full rounded-lg hover:bg-[#F3F5F8] duration-300 easy-in-out text-[#0E121B] font-semibold text-sm px-[15px] py-[11.5px] flex items-center justify-start gap-2">
-            <Tag />
+            <Tag width={"20px"} height={"20px"} />
             <p className="text-sm text-[#0E121B]">Fitness</p>
           </button>
         </div>
