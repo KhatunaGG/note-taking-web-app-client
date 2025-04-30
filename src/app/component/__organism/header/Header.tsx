@@ -4,7 +4,7 @@ import Search from "../../__atoms/search/Search";
 
 const Header = () => {
   return (
-    <div className="bg-[#F3F5F8] px-8 w-full h-[54px] md:h-[74px] lg:h-[81px]  flex items-center justify-between lg:px-[2.78%] lg:bg-white lg:border-b lg:border-l lg:border-[#E0E4EA]">
+    <div className="bg-[#F3F5F8] px-8 w-full h-[54px] md:h-[74px] lg:h-[81px]  flex items-center justify-between lg:px-[2.78%]  lg:border-b lg:border-l lg:border-[#E0E4EA]">
       <h1 className="font-bold text-[24px] text-[#0E121B] hidden lg:block">
         All Notes
       </h1>
