@@ -1,11 +1,33 @@
 import React from "react";
+import {
+  FieldErrors,
+  FieldValues,
+  Path,
+  UseFormRegister,
+} from "react-hook-form";
 
-const Textarea = () => {
+export type TextareaPropsType<T extends FieldValues> = {
+  register: UseFormRegister<T>;
+  errors: FieldErrors<T>;
+  fieldName: Path<T>;
+};
+
+const Textarea = <T extends FieldValues>({
+  register,
+  errors,
+  fieldName,
+}: TextareaPropsType<T>) => {
+  const error = errors[fieldName]?.message as string | undefined;
+
   return (
-    <textarea
-      className="w-full h-full resize-none outline-none text-sm text-[#232530] p-2"
-      placeholder="Write your note here..."
-    />
+    <div className="flex flex-col gap-1 h-full">
+      <textarea
+        {...register(fieldName)}
+        className="w-full h-full resize-none outline-none text-sm text-[#232530] p-2"
+        placeholder="Write your note here..."
+      />
+      {error && <p className="text-red-500 text-sm">{error}</p>}
+    </div>
   );
 };
 

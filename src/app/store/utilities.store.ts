@@ -1,12 +1,12 @@
 import { create } from "zustand";
 
-interface UtilityState {
+interface IUseUtilities {
   currentPath: string;
   setCurrentPath: (path: string) => void;
   activeLink: (path: string) => string;
 }
 
-export const useUtilities = create<UtilityState>((set, get) => ({
+export const useUtilities = create<IUseUtilities>((set, get) => ({
   currentPath: "",
   setCurrentPath: (path) => set({ currentPath: path }),
   activeLink: (path) => {

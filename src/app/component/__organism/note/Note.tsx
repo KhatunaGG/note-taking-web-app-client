@@ -1,8 +1,13 @@
-import React from "react";
+"use client";
+import useManageNotes from "@/app/store/notes.store";
 
 const Note = () => {
+
+ 
   return (
-    <div className="w-full border-t border-b border-t-[#E0E4EA] border-b-[#E0E4EA] p-2 flex flex-col gap-3">
+    <div
+    className={`w-full border-t border-t-[#E0E4EA] p-2 flex flex-col gap-3 border-b border-b-[#E0E4EA]`}
+    >
       <h2 className="text-base font-semibold text-[#0E121B]">
         React Performance Optimization
       </h2>
