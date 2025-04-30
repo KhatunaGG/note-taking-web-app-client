@@ -1,9 +1,17 @@
+"use client";
 import Note from "../note/Note";
 import Nav from "../nav/Nav";
 import { Plus } from "../../__atoms";
 import Link from "next/link";
+import useManageNotes from "../../../store/notes.store";
 
 const Notes = () => {
+  const { setCreateNote, createNote } = useManageNotes();
+
+  const handleCreate = () => {
+    setCreateNote(true);
+  };
+
   return (
     <div className="w-full min-h-[calc(100vh-54px)] md:min-h-[calc(100vh-74px)] lg:min-h-[calc(100vh-81px)] bg-white ">
       <div
@@ -35,6 +43,7 @@ const Notes = () => {
       </button> */}
 
         <button
+          onClick={handleCreate}
           type="button"
           className=" bg-[#335CFF] text-white text-sm font-normal py-3 
         fixed right-8 bottom-[90px] h-[48px] w-[48px]
@@ -50,7 +59,10 @@ const Notes = () => {
           </div>
         </button>
 
+
+
         <div className="w-full flex flex-col md:pb-[114px] lg:pb-[37px]">
+          
           <Link href={`/${1}`}>
             <Note />
           </Link>
@@ -62,6 +74,9 @@ const Notes = () => {
           <Note />
           <Note />
         </div>
+
+
+
       </div>
       <Nav />
     </div>

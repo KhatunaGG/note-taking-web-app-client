@@ -12,8 +12,8 @@ export type EmailInputPropsType<T extends FieldValues> = {
   register: UseFormRegister<T>;
   errors: FieldErrors<T>;
   fieldName: Path<T>;
-
 };
+
 const EmailInput = <T extends FieldValues>({
   register,
   errors,
