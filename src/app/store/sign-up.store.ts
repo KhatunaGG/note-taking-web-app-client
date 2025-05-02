@@ -16,6 +16,8 @@ const handleApiError = (error: AxiosError<ErrorResponse>): string => {
   return unexpectedError;
 };
 
+
+
 export interface ISignUpStore {
   isLoading: boolean;
   axiosError: string;

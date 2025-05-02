@@ -12,16 +12,17 @@ const createNoteSchema = z.object({
   content: z.string().min(1, "Title cannot be empty"),
   isArchived: z.boolean(),
   // tags: z.array(z.string().min(1, "Tags must be non-empty strings")),
-  tags: z.string()
+  tags: z.string(),
+  lastEdited: z.string().optional(),
 });
 
 export type NoteType = z.infer<typeof createNoteSchema>;
 
 const NoteDetails = () => {
-  const { createNote } = useManageNotes();
+  const { createNote, createNewNote, success } = useManageNotes();
   // const pathname = usePathname();
   // const isNoteDetailsPage = pathname?.includes("/");
-
+  console.log(success, "success");
   const {
     register,
     reset,
@@ -34,30 +35,25 @@ const NoteDetails = () => {
       content: "",
       tags: "",
       isArchived: false,
+      lastEdited: "",
     },
   });
 
+  // const onSubmit = async (formData: NoteType) => {
+  //   if (Object.keys(errors).length > 0) return;
+  //   await createNewNote(formData);
+  //   if (success) {
+  //     reset();
+  //   }
+  // };
+
   const onSubmit = async (formData: NoteType) => {
-   
-    const tagsArray = formData.tags
-      .toString()
-      .split(",")
-      .map((tag) => tag.trim())
-      .filter((tag) => tag.length > 0);
-      const newNote = {
-        ...formData,
-        tags: tagsArray,
-      }
-
-      console.log(newNote, "formData");
-
-    // await createNote({
-    //   ...formData,
-    //   tags: tagsArray,
-    // });
-
-    reset(); // optional
+    const result = await createNewNote(formData);
+    if (result) {
+      reset();
+    }
   };
+  
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="w-full relative">
