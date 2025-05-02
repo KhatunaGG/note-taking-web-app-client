@@ -6,7 +6,7 @@ import Link from "next/link";
 import useManageNotes from "../../../store/notes.store";
 
 const Notes = () => {
-  const { setCreateNote, createNote } = useManageNotes();
+  const { setCreateNote, createNote, allNotes } = useManageNotes();
 
   const handleCreate = () => {
     setCreateNote(true);
@@ -59,24 +59,37 @@ const Notes = () => {
           </div>
         </button>
 
-
-
         <div className="w-full flex flex-col md:pb-[114px] lg:pb-[37px]">
-          
-          <Link href={`/${1}`}>
-            <Note />
-          </Link>
+          {allNotes.length > 0 ? (
+            allNotes.map((note) => (
+              <div key={note._id} className="w-full">
+                <Link href={`/${note._id}`}>
+                  <Note
+                    title={note.title}
+                    tags={note.tags}
+                    _id={note._id}
+                    content={note.content}
+                    isArchived={note.isArchived}
+                    lastEdited={note.lastEdited}
+                  />
+                </Link>
+              </div>
+            ))
+          ) : (
+            <p className="hidden text-sm font-medium text-[#0E121B]">
+              You don’t have any notes yet. Start a new note to capture your
+              thoughts and ideas.
+            </p>
+          )}
+
+          {/* <Note />
           <Note />
           <Note />
           <Note />
           <Note />
           <Note />
-          <Note />
-          <Note />
+          <Note /> */}
         </div>
-
-
-
       </div>
       <Nav />
     </div>

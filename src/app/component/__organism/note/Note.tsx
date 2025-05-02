@@ -1,25 +1,46 @@
 "use client";
-import useManageNotes from "@/app/store/notes.store";
 
-const Note = () => {
+export type NotePropsType = {
+  title: string;
+  content: string;
+  tags: string[];
+  _id: string;
+  isArchived: boolean;
+  lastEdited: string;
+};
+const Note = ({
+  title,
+  content,
+  tags,
+  _id,
+  isArchived,
+  lastEdited,
+}: NotePropsType) => {
+  const formattedDate = new Date(lastEdited).toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
 
- 
   return (
     <div
-    className={`w-full border-t border-t-[#E0E4EA] p-2 flex flex-col gap-3 border-b border-b-[#E0E4EA]`}
+      className={`w-full border-t border-t-[#E0E4EA] p-2 flex flex-col gap-3 border-b border-b-[#E0E4EA]`}
     >
-      <h2 className="text-base font-semibold text-[#0E121B]">
-        React Performance Optimization
-      </h2>
+      <h2 className="text-base font-semibold text-[#0E121B]">{title}</h2>
       <div className="w-full flex flex-wrap gap-1">
-        <div className="px-[6px] py-[2px] bg-[#E0E4EA] rounded-sm text-xs w-max">
-          Dev
-        </div>
-        <div className="px-[6px] py-[2px] bg-[#E0E4EA] rounded-sm text-xs w-max">
+        {tags.map((tag, i) => (
+          <div
+            key={i}
+            className="px-[6px] py-[2px] bg-[#E0E4EA] rounded-sm text-xs w-max"
+          >
+            {tag}
+          </div>
+        ))}
+        {/* <div className="px-[6px] py-[2px] bg-[#E0E4EA] rounded-sm text-xs w-max">
           Personal
-        </div>
+        </div> */}
       </div>
-      <p className="text-[#2B303B] text-xs ">22 Sep 2024</p>
+      <p className="text-[#2B303B] text-xs ">{formattedDate}</p>
     </div>
   );
 };

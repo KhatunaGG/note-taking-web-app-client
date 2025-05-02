@@ -6,6 +6,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import useManageNotes from "@/app/store/notes.store";
+import { useEffect } from "react";
+import { useSignInStore } from "@/app/store/sign-in.store";
 
 const createNoteSchema = z.object({
   title: z.string().min(1, "Title cannot be empty"),
@@ -19,10 +21,16 @@ const createNoteSchema = z.object({
 export type NoteType = z.infer<typeof createNoteSchema>;
 
 const NoteDetails = () => {
-  const { createNote, createNewNote, success } = useManageNotes();
-  // const pathname = usePathname();
-  // const isNoteDetailsPage = pathname?.includes("/");
-  console.log(success, "success");
+  const { accessToken } = useSignInStore();
+  const { createNote, createNewNote, success, allNotes, getAllNotes } =
+    useManageNotes();
+
+  useEffect(() => {
+    if (accessToken) {
+      getAllNotes();
+    }
+  }, [accessToken, getAllNotes]);
+
   const {
     register,
     reset,
@@ -39,21 +47,14 @@ const NoteDetails = () => {
     },
   });
 
-  // const onSubmit = async (formData: NoteType) => {
-  //   if (Object.keys(errors).length > 0) return;
-  //   await createNewNote(formData);
-  //   if (success) {
-  //     reset();
-  //   }
-  // };
-
   const onSubmit = async (formData: NoteType) => {
     const result = await createNewNote(formData);
     if (result) {
       reset();
     }
   };
-  
+
+  if (!accessToken) return null;
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="w-full relative">
