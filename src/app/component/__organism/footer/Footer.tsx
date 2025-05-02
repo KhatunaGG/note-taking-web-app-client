@@ -6,6 +6,7 @@ const Footer = ({ isSubmitting }: { isSubmitting: boolean }) => {
       <button
         type="submit"
         className="bg-[#335CFF] text-sm text-white py-3 px-4 rounded-lg"
+        disabled={isSubmitting}
       >
         {isSubmitting ? "Saving..." : "Save Note"}
       </button>
