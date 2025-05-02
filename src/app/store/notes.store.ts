@@ -13,6 +13,7 @@ export type newNoteType = {
   tags: string[];
   isArchived: boolean;
   lastEdited: string;
+  _id: string
 };
 
 const handleApiError = (error: AxiosError<ErrorResponse>): string => {
@@ -36,6 +37,7 @@ export interface IUseManageNotes {
   tags: string[];
   isArchived: boolean;
   lastEdited: Date;
+  allNotes: newNoteType[];
 
   setSuccess: (success: boolean) => void;
   setIsLoading: (isLoading: boolean) => void;
@@ -50,6 +52,8 @@ export interface IUseManageNotes {
   ) => void;
   // createNewNote: (formData: NoteType) => void;
   createNewNote: (formData: NoteType) => Promise<boolean>;
+  getAllNotes: () => void;
+  setAllNotes: (allNotes: newNoteType[]) => void;
 }
 
 const useManageNotes = create<IUseManageNotes>((set) => ({
@@ -62,7 +66,9 @@ const useManageNotes = create<IUseManageNotes>((set) => ({
   tags: [],
   isArchived: false,
   lastEdited: new Date(),
+  allNotes: [],
 
+  setAllNotes: (allNotes) => set({ allNotes }),
   setSuccess: (success) => set({ success }),
   setIsLoading: (isLoading) => set({ isLoading }),
   setCreateNote: (createNote) => set({ createNote }),
@@ -79,7 +85,7 @@ const useManageNotes = create<IUseManageNotes>((set) => ({
       .map((tag) => tag.trim())
       .filter((tag) => tag.length > 0);
 
-    const newNote: newNoteType = {
+    const newNote = {
       ...formData,
       tags: tagsArray,
       lastEdited: new Date().toString(),
@@ -89,8 +95,9 @@ const useManageNotes = create<IUseManageNotes>((set) => ({
       const res = await axiosInstance.post("note", newNote, {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
-  
+
       if (res.status >= 200 && res.status <= 204) {
+        useManageNotes.getState().getAllNotes();
         set({
           title: "",
           content: "",
@@ -108,8 +115,26 @@ const useManageNotes = create<IUseManageNotes>((set) => ({
     } finally {
       set({ isLoading: false });
     }
-  
+
     return false;
+  },
+
+  getAllNotes: async () => {
+    set({ isLoading: true, axiosError: "" });
+    const accessToken = useSignInStore.getState().accessToken;
+    try {
+      const res = await axiosInstance.get("/note", {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+      if (res.status >= 200 && res.status <= 204) {
+        set({ allNotes: res.data, success: true });
+      }
+    } catch (e) {
+      const errorMessage = handleApiError(e as AxiosError<ErrorResponse>);
+      set({ axiosError: errorMessage });
+    } finally {
+      set({ isLoading: false });
+    }
   },
 }));
 
