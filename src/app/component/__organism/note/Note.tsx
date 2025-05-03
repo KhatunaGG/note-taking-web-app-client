@@ -1,4 +1,7 @@
 "use client";
+import { useSignInStore } from "@/app/store/sign-in.store";
+import { useUtilities } from "@/app/store/utilities.store";
+import { useEffect } from "react";
 
 export type NotePropsType = {
   title: string;
@@ -16,11 +19,21 @@ const Note = ({
   isArchived,
   lastEdited,
 }: NotePropsType) => {
-  const formattedDate = new Date(lastEdited).toLocaleDateString("en-GB", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-  });
+  const { formatDate } = useUtilities();
+  const formatted = formatDate(lastEdited);
+  // const formattedDate = new Date(lastEdited).toLocaleDateString("en-GB", {
+  //   day: "2-digit",
+  //   month: "short",
+  //   year: "numeric",
+  // });
+
+
+  useEffect(() => {
+    (async () => {
+      await useSignInStore.getState().initialize();
+    })();
+  }, []);
+  
 
   return (
     <div
@@ -40,7 +53,7 @@ const Note = ({
           Personal
         </div> */}
       </div>
-      <p className="text-[#2B303B] text-xs ">{formattedDate}</p>
+      <p className="text-[#2B303B] text-xs ">{formatted}</p>
     </div>
   );
 };
