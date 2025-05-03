@@ -14,3 +14,4 @@ export { default as NoteDetails } from "./noteDetails/NoteDetails"
 export { default as Note } from "./note/Note"
 export { default as Footer } from "./footer/Footer"
 export { default as Nav } from "./nav/Nav"
+

@@ -1,18 +1,27 @@
 "use client";
-import { useSignInStore } from "@/app/store/sign-in.store";
 import { useEffect } from "react";
-import NoteDetails from "../noteDetails/NoteDetails";
+import { useRouter } from "next/navigation";
+import { useSignInStore } from "@/app/store/sign-in.store";
 
 const Dashboard = () => {
-  const { accessToken, initialize, currentUser } = useSignInStore();
+  const { accessToken, initialize, isLoading } = useSignInStore();
+  const router = useRouter();
 
   useEffect(() => {
     initialize();
   }, [initialize]);
 
-  if (!accessToken) return null;
+  useEffect(() => {
+    if (accessToken) {
+      router.replace("/note");
+    }
+  }, [accessToken, router]);
 
-  return <NoteDetails />;
+  if (isLoading || !accessToken) {
+    return <div>Loading...</div>;
+  }
+
+  return null;
 };
 
 export default Dashboard;

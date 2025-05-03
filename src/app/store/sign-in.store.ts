@@ -85,17 +85,30 @@ export const useSignInStore = create<ISignInStore>((set) => ({
     }
   },
 
+  // initialize: async () => {
+  //   const token = await getCookie("accessToken");
+  //   await useSignInStore.getState().getCurrentUser(token);
+  //   if (token) {
+  //     set({ accessToken: token });
+  //   } else {
+  //     window.location.href = "/sign-up";
+  //   }
+  // },
+
   initialize: async () => {
-    const token = await getCookie("accessToken");
-    await useSignInStore.getState().getCurrentUser(token);
-    if (token) {
+    const token = getCookie("accessToken");
+  
+    if (token && typeof token === "string") {
       set({ accessToken: token });
+      await useSignInStore.getState().getCurrentUser(token);
     } else {
       window.location.href = "/sign-up";
     }
   },
+  
 
   getCurrentUser: async (accessToken: string | undefined) => {
+    if (!accessToken) return;
     if (!accessToken) return;
     try {
       const res = await axiosInstance.get("/auth/current-user", {
@@ -114,7 +127,8 @@ export const useSignInStore = create<ISignInStore>((set) => ({
   logout: () => {
     deleteCookie("accessToken");
     set({ currentUser: null, accessToken: "" });
-    // console.log("State reset complete");
     window.location.href = "/sign-up";
   },
 }));
+
+
