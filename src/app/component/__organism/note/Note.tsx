@@ -1,7 +1,5 @@
 "use client";
-import { useSignInStore } from "@/app/store/sign-in.store";
 import { useUtilities } from "@/app/store/utilities.store";
-import { useEffect } from "react";
 
 export type NotePropsType = {
   title: string;
@@ -27,14 +25,6 @@ const Note = ({
   //   year: "numeric",
   // });
 
-
-  useEffect(() => {
-    (async () => {
-      await useSignInStore.getState().initialize();
-    })();
-  }, []);
-  
-
   return (
     <div
       className={`w-full border-t border-t-[#E0E4EA] p-2 flex flex-col gap-3 border-b border-b-[#E0E4EA]`}
@@ -49,9 +39,6 @@ const Note = ({
             {tag}
           </div>
         ))}
-        {/* <div className="px-[6px] py-[2px] bg-[#E0E4EA] rounded-sm text-xs w-max">
-          Personal
-        </div> */}
       </div>
       <p className="text-[#2B303B] text-xs ">{formatted}</p>
     </div>

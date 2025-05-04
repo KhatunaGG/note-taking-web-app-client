@@ -41,6 +41,7 @@
 import { ToastContainer } from "react-toastify";
 import "../globals.css";
 import Sidebar from "../component/__organism/sidebar/Sidebar";
+import Overlay from "../component/__organism/overlay/Overlay";
 
 
 export default function MainLayout({
@@ -49,13 +50,16 @@ export default function MainLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className=" w-full min-h-screen flex  bg-[#F3F5F8] lg:bg-white">
+    // <div className=" w-full min-h-screen flex  bg-[#F3F5F8] lg:bg-white relative">
+    <div className=" w-full min-h-screen flex   lg:bg-white relative">
+      <Overlay />
       <div className="lg:w-[18.88%] h-full overflow-y-auto ">
         <Sidebar />
       </div>
 
-      <div className="w-full lg:w-[81.12%]">
-        <div className="w-full hidden lg:flex ">{children}</div>
+      <div className="w-full lg:w-[81.12%] ">
+        {/* <div className="w-full  lg:flex ">{children}</div> */}
+        <div className="w-full  lg:flex ">{children}</div>
       </div>
       <ToastContainer />
     </div>

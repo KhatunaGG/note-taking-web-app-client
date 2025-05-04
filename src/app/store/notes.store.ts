@@ -5,6 +5,7 @@ import { ErrorResponse } from "../interface";
 import { toast } from "react-toastify";
 import { axiosInstance } from "../libs/axiosInstance";
 import { useSignInStore } from "./sign-in.store";
+import { Modak } from "next/font/google";
 
 export type NewNoteType = {
   title: string;
@@ -39,7 +40,9 @@ export interface IUseManageNotes {
   allNotes: NewNoteType[];
   noteById: NewNoteType | null;
   activeNote: string | null;
+  modal: boolean;
 
+  setModal: (modal: boolean) => void;
   setActiveNote: (id: string) => void;
   setNoteById: (noteById: NewNoteType) => void;
   setSuccess: (success: boolean) => void;
@@ -59,10 +62,13 @@ export interface IUseManageNotes {
   setAllNotes: (allNotes: NewNoteType[]) => void;
   getNoteById: (id: string) => Promise<void>;
   toggleCreateNote: () => void;
-  deleteNote: (id: string | null) => void;
+  deleteNote: (id: string) => void;
+  showModal: () => void;
+  closeModal: () => void;
+  resetNewNote: () => void;
 }
 
-const useManageNotes = create<IUseManageNotes>((set) => ({
+const useManageNotes = create<IUseManageNotes>((set, get) => ({
   isLoading: false,
   axiosError: "",
   success: false,
@@ -75,7 +81,9 @@ const useManageNotes = create<IUseManageNotes>((set) => ({
   allNotes: [],
   noteById: null,
   activeNote: null,
+  modal: false,
 
+  setModal: (Modal) => set({ modal: true }),
   setActiveNote: (id) => set({ activeNote: id }),
   setNoteById: (noteById) => set({ noteById }),
   setAllNotes: (allNotes) => set({ allNotes }),
@@ -150,7 +158,6 @@ const useManageNotes = create<IUseManageNotes>((set) => ({
 
   getNoteById: async (id: string) => {
     const accessToken = useSignInStore.getState().accessToken;
-
     set({ isLoading: true, axiosError: "" });
 
     try {
@@ -168,21 +175,93 @@ const useManageNotes = create<IUseManageNotes>((set) => ({
     }
   },
 
-  deleteNote: async (id: string | null) => {
-    if (id === null) {
-      set({ createNote: false });
-      set({
-        title: "",
-        content: "",
-        tags: [],
-        isArchived: false,
-        lastEdited: undefined,
-        success: true,
-        createNote: false,
+  closeModal: () => {
+    set({ modal: false });
+  },
+  
+  resetNewNote: () => {
+    set({ createNote: false });
+    set({
+      title: "",
+      content: "",
+      tags: [],
+      isArchived: false,
+      lastEdited: undefined,
+      success: true,
+      createNote: false,
+    });
+  },
+
+  // deleteNote: async (id: string | null): Promise<boolean> => {
+  //   if (id === null) {
+  //     set({ createNote: false });
+  //     set({
+  //       title: "",
+  //       content: "",
+  //       tags: [],
+  //       isArchived: false,
+  //       lastEdited: undefined,
+  //       success: true,
+  //       createNote: false,
+  //     });
+  //     return true;
+  //   }
+
+  //   const accessToken = useSignInStore.getState().accessToken;
+  //   set({ isLoading: true, axiosError: "" });
+
+  //   try {
+  //     const res = await axiosInstance.delete(`note/${id}`, {
+  //       headers: { Authorization: `Bearer ${accessToken}` },
+  //     });
+  //     if (res.status >= 200 && res.status <= 204) {
+  //       set({ noteById: null, success: true });
+  //       return true;
+  //     }
+  //   } catch (e) {
+  //     const errorMessage = handleApiError(e as AxiosError<ErrorResponse>);
+  //     set({ axiosError: errorMessage });
+  //   } finally {
+  //     set({ isLoading: false });
+  //   }
+
+  //   return false;
+  // },
+
+
+  deleteNote: async (id: string): Promise<boolean> => {
+    const accessToken = useSignInStore.getState().accessToken;
+    const closeModal = get().closeModal;
+    const getAllNotes = get().getAllNotes;
+    set({ isLoading: true, axiosError: "" });
+
+    try {
+      const res = await axiosInstance.delete(`note/${id}`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
       });
-    } else if (id) {
-      console.log(id, "id from delete function");
+      if (res.status >= 200 && res.status <= 204) {
+        set({ noteById: null, success: true });
+        closeModal()
+        getAllNotes()
+        // window.location.href = "/note";
+        return true;
+      }
+    } catch (e) {
+      const errorMessage = handleApiError(e as AxiosError<ErrorResponse>);
+      set({ axiosError: errorMessage });
+    } finally {
+      set({ isLoading: false });
     }
+
+    return false;
+  },
+
+
+
+
+  
+  showModal: () => {
+    set({ modal: true });
   },
 }));
 
