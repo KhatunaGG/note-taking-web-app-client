@@ -12,24 +12,10 @@ const Notes = () => {
   const router = useRouter();
   const { accessToken } = useSignInStore();
 
-  useEffect(() => {
-    (async () => {
-      await useSignInStore.getState().initialize();
-    })();
-  }, []);
+  const { allNotes, getNoteById, getAllNotes, toggleCreateNote, createNote } =
+    useManageNotes();
 
-  const {
-    setCreateNote,
-    createNote,
-    allNotes,
-    getNoteById,
-    getAllNotes,
-    toggleCreateNote,
-    setActiveNote,
-    activeNote,
-  } = useManageNotes();
-
-  console.log(activeNote, "activeNote");
+    console.log(createNote, "createNote")
 
   useEffect(() => {
     getAllNotes();
@@ -41,7 +27,6 @@ const Notes = () => {
 
   const handleNoteClick = async (id: string) => {
     await getNoteById(id);
-
     // router.push(`/note/${id}`);
   };
 
@@ -126,11 +111,9 @@ const Notes = () => {
           )}
         </div>
       </div>
-      <Nav />
+      {/* <Nav /> */}
     </div>
   );
 };
 
 export default Notes;
-
-
