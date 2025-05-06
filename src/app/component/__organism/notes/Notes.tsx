@@ -7,15 +7,15 @@ import useManageNotes from "../../../store/notes.store";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useSignInStore } from "@/app/store/sign-in.store";
+import { useUtilities } from "@/app/store/utilities.store";
+import TagNav from "../tagNav/TagNav";
 
 const Notes = () => {
   const router = useRouter();
   const { accessToken } = useSignInStore();
-
   const { allNotes, getNoteById, getAllNotes, toggleCreateNote, createNote } =
     useManageNotes();
-
-    console.log(createNote, "createNote")
+  const { routeToTags } = useUtilities();
 
   useEffect(() => {
     getAllNotes();
@@ -33,10 +33,15 @@ const Notes = () => {
   if (!accessToken) return null;
 
   return (
-    <div className="w-full min-h-[calc(100vh-54px)] md:min-h-[calc(100vh-74px)] lg:min-h-[calc(100vh-81px)] bg-white">
+    <div className="w-full min-h-[calc(100vh-54px)] md:min-h-[calc(100vh-74px)] lg:min-h-[calc(100vh-81px)] bg-green-300">
+      {/* {routeToTags && (
+        <TagNav />
+      )} */}
       <div
-        className="px-8 pt-[20px] lg:pl-8 md:pt-6 lg:pt-[20px] lg:pr-4 flex flex-col gap-4 
-    lg:border lg:border-[#E0E4EA] rounded-t-xl overflow-hidden lg:rounded-t-[0px]  relative    min-h-screen"
+        className={`${
+          routeToTags && "hidden"
+        } px-8 pt-[20px] lg:pl-8 md:pt-6 lg:pt-[20px] lg:pr-4 flex flex-col gap-4 
+    lg:border lg:border-[#E0E4EA] rounded-t-xl overflow-hidden lg:rounded-t-[0px]  relative min-h-screen`}
       >
         <h1 className="block font-bold text-[24px] text-[#0E121B] lg:hidden">
           All Notes
@@ -49,7 +54,25 @@ const Notes = () => {
           + Create New Note
         </button>
 
-        <button
+        <Link href={"/noteDetails"}>
+          <button
+            // onClick={resetNewNote}
+            type="button"
+            className=" bg-green-600 text-white text-sm font-normal  
+        fixed right-8 bottom-[90px] h-[48px] w-[48px]
+       md:h-[64px] md:w-[64px] rounded-full 
+       items-center justify-center lg:hidden"
+          >
+            <div className="w-full flex items-center justify-center gap-1">
+              <Plus />
+              <span className="hidden lg:block lg:text-sm font-medium ">+</span>
+              <span className="hidden text-sm font-medium lg:block">
+                Create New Note
+              </span>
+            </div>
+          </button>
+        </Link>
+        {/* <button
           type="button"
           className=" bg-green-600 text-white text-sm font-normal  
         fixed right-8 bottom-[90px] h-[48px] w-[48px]
@@ -63,7 +86,7 @@ const Notes = () => {
               Create New Note
             </span>
           </div>
-        </button>
+        </button> */}
 
         {/* <button
           onClick={handleCreate}

@@ -40,8 +40,9 @@ export default function NotePage() {
         <div className="w-full lg:w-[24.82%]  ">
           <Notes />
         </div>
+        {/* <div className="w-full lg:w-[50.34%] lg:flex hidden border-r border-r-[#CACFD8]"> */}
         <div className="w-full lg:w-[50.34%] lg:flex hidden border-r border-r-[#CACFD8]">
-          {/* <NoteDetails /> */}
+          <NoteDetails />
         </div>
         <div className="w-full lg:w-[22.07%] hidden lg:flex ">
           <Aside />

@@ -21,18 +21,18 @@ const TagInput = <T extends FieldValues>({
   const error = errors[fieldName]?.message as string | undefined;
 
   return (
-    <div className="w-full flex flex-col gap-1">
+    <div className="w-full flex flex-col gap-1 ">
       <div className="flex items-center">
-        <div className="flex gap-[6px] items-center w-[19.55%]">
+        <div className="w-[28%] md:w-[19.55%] flex gap-[6px] items-center ">
           <Tag width={"16px"} height={"16px"} />
-          <p className="text-sm text-[#2B303B]">Tags</p>
+          <p className="text-xs md:text-sm text-[#2B303B]">Tags</p>
         </div>
-        <div className="w-[80.45%] flex gap-[6px] items-center">
+        <div className={`w-[72%] md:w-[80.45%] flex gap-[6px] items-center`}>
           <input
             {...register(fieldName)}
             type="text"
             placeholder="Add tags separated by commas (e.g. Work, Planning)"
-            className="text-sm text-[#99A0AE] w-full outline-none"
+            className="text-xs md:text-sm text-[#99A0AE] w-full outline-none flex flex-wrap"
           />
         </div>
       </div>

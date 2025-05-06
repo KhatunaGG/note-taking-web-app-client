@@ -180,7 +180,7 @@ const useManageNotes = create<IUseManageNotes>((set, get) => ({
   },
   
   resetNewNote: () => {
-    set({ createNote: false });
+    set({ createNote: false,                noteById: null });
     set({
       title: "",
       content: "",

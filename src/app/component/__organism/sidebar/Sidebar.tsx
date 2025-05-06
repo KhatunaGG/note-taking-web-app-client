@@ -61,23 +61,13 @@
 
 // export default Sidebar;
 
-
-
-
-
-
-
-
-
-
-
-
 "use client";
 import { usePathname } from "next/navigation";
 import { Archives, Home, Logo, Tag } from "../../__atoms";
 import Link from "next/link";
 import { useUtilities } from "@/app/store/utilities.store";
 import { useEffect } from "react";
+import TagNav from "../tagNav/TagNav";
 
 const Sidebar = () => {
   const pathname = usePathname();
@@ -94,7 +84,7 @@ const Sidebar = () => {
       </div>
 
       <div className="flex flex-col gap-2">
-        <div className="flex flex-col">
+        <div className="flex flex-col      ">
           <Link href="/">
             <button
               className={`${activeLink(
@@ -117,8 +107,9 @@ const Sidebar = () => {
             </button>
           </Link>
         </div>
-
-        <div className="border-t border-t-[#E0E4EA]">
+        
+        <TagNav />
+        {/* <div className="border-t border-t-[#E0E4EA]">
           <button className="w-full rounded-lg hover:bg-[#F3F5F8] duration-300 easy-in-out text-[#0E121B] font-semibold text-sm px-[15px] py-[11.5px] flex items-center justify-start gap-2">
             <Tag width={"20px"} height={"20px"} />
             <p className="text-sm text-[#0E121B]">Dev</p>
@@ -127,7 +118,7 @@ const Sidebar = () => {
             <Tag width={"20px"} height={"20px"} />
             <p className="text-sm text-[#0E121B]">Fitness</p>
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );

@@ -2,6 +2,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useSignInStore } from "@/app/store/sign-in.store";
+import { AnimateSpin } from "../../__molecules";
 
 const Dashboard = () => {
   const { accessToken, initialize, isLoading } = useSignInStore();
@@ -17,9 +18,11 @@ const Dashboard = () => {
     }
   }, [accessToken, router]);
 
+
   if (isLoading || !accessToken) {
-    return <div>Loading...</div>;
+    return <AnimateSpin />;
   }
+  if(!accessToken) return null
 
   return null;
 };
