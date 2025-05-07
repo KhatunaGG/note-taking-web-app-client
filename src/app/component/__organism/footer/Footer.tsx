@@ -1,5 +1,5 @@
 "use client";
-import { DeleteButton } from "../../__molecules";
+import { DeleteButton, ResetButton } from "../../__molecules";
 
 export type FooterPropsType = {
   isSubmitting: boolean;
@@ -17,7 +17,8 @@ const Footer = ({ isSubmitting, createNote }: FooterPropsType) => {
       >
         {isSubmitting ? "Saving..." : "Save Note"}
       </button>
-      <DeleteButton />
+      <ResetButton />
+      {/* <DeleteButton /> */}
     </div>
   );
 };

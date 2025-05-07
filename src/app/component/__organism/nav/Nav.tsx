@@ -189,7 +189,7 @@ const Nav = () => {
   const navItems = [
     { href: "/note", icon: <Home width="24px" height="24px" />, label: "Home" },
     { href: "/search", icon: <Search width="24px" height="24px" />, label: "Search" },
-    { href: "/archives", icon: <Archives width="24px" height="24px" />, label: "Archives" },
+    { href: "/archive", icon: <Archives width="24px" height="24px" />, label: "Archives" },
     { href: "/tags", icon: <Tag width="24px" height="24px" />, label: "Tag" },
     { href: "/settings", icon: <Setting width="24px" height="24px" />, label: "Settings" },
   ];

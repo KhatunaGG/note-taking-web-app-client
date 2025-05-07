@@ -66,6 +66,7 @@ export interface IUseManageNotes {
   showModal: () => void;
   closeModal: () => void;
   resetNewNote: () => void;
+  updateNote: (id: string) => void;
 }
 
 const useManageNotes = create<IUseManageNotes>((set, get) => ({
@@ -95,6 +96,7 @@ const useManageNotes = create<IUseManageNotes>((set, get) => ({
     set({ title, content, tags, isArchived }),
   toggleCreateNote: () =>
     set((state) => ({ createNote: !state.createNote, noteById: null })),
+    // set((state) => ({ createNote: !state.createNote})),
 
   createNewNote: async (formData: NoteType) => {
     set({ isLoading: true, axiosError: "" });
@@ -178,9 +180,9 @@ const useManageNotes = create<IUseManageNotes>((set, get) => ({
   closeModal: () => {
     set({ modal: false });
   },
-  
+
   resetNewNote: () => {
-    set({ createNote: false,                noteById: null });
+    set({ createNote: false, noteById: null });
     set({
       title: "",
       content: "",
@@ -228,7 +230,6 @@ const useManageNotes = create<IUseManageNotes>((set, get) => ({
   //   return false;
   // },
 
-
   deleteNote: async (id: string): Promise<boolean> => {
     const accessToken = useSignInStore.getState().accessToken;
     const closeModal = get().closeModal;
@@ -240,10 +241,10 @@ const useManageNotes = create<IUseManageNotes>((set, get) => ({
         headers: { Authorization: `Bearer ${accessToken}` },
       });
       if (res.status >= 200 && res.status <= 204) {
+        closeModal();
+        getAllNotes();
+        window.location.href = "/note";
         set({ noteById: null, success: true });
-        closeModal()
-        getAllNotes()
-        // window.location.href = "/note";
         return true;
       }
     } catch (e) {
@@ -256,10 +257,10 @@ const useManageNotes = create<IUseManageNotes>((set, get) => ({
     return false;
   },
 
+  updateNote: async (id: string) => {
+    console.log(id, "id from store");
+  },
 
-
-
-  
   showModal: () => {
     set({ modal: true });
   },

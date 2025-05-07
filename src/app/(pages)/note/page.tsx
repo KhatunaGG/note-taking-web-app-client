@@ -32,6 +32,7 @@ import React from "react";
 export default function NotePage() {
   return (
     <div className="w-full flex flex-col items-start relative">
+
       <div className="h-[54px] md:h-[74px] lg:h-[81px] w-full absolute inset-0 z-10">
         <Header />
       </div>
@@ -49,6 +50,8 @@ export default function NotePage() {
         </div>
       </div>
       <Nav />
+
+      
     </div>
   );
 }
