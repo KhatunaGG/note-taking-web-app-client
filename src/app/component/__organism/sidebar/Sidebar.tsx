@@ -85,7 +85,7 @@ const Sidebar = () => {
 
       <div className="flex flex-col gap-2">
         <div className="flex flex-col      ">
-          <Link href="/">
+          <Link href="/note">
             <button
               className={`${activeLink(
                 "/"
@@ -96,10 +96,10 @@ const Sidebar = () => {
             </button>
           </Link>
 
-          <Link href={"/"}>
+          <Link href={"/archive"}>
             <button
               className={`${activeLink(
-                "/Archives"
+                "/archive"
               )} w-full rounded-lg hover:bg-[#F3F5F8] duration-300 easy-in-out text-[#0E121B] font-semibold text-sm px-[15px] py-[11.5px] flex items-center justify-start gap-2`}
             >
               <Archives width={"20px"} height={"20px"} />

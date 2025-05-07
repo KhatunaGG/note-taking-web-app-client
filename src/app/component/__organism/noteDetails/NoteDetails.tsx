@@ -115,7 +115,7 @@
 //       <div className="w-full px-6 pt-5 pb-4   h-full lg:flex flex-col gap-4  border-r border-r-[#CACFD8] min-h-screen    bg-red-500">
 //         {(createNote || noteById ) && (
 //           <div className="flex-grow w-full bg-white flex flex-col gap-4">
-          
+
 //             <GoBack />
 //             <div className="w-ful flex flex-col gap-4">
 //               <TitleInput
@@ -165,10 +165,6 @@
 
 // export default NoteDetails;
 
-
-
-
-
 "use client";
 import Footer from "../footer/Footer";
 import { Clock } from "../../__atoms";
@@ -196,9 +192,14 @@ export type NoteType = z.infer<typeof createNoteSchema>;
 const NoteDetails = ({ noteParam }: { noteParam?: string }) => {
   const { accessToken } = useSignInStore();
   const { formatDate } = useUtilities();
-  const path = usePathname()
-  const isNoteDetailsPage = path === '/noteDetails'
-
+  const path = usePathname();
+  const rout = useRouter()
+  // const isNoteDetailsPage = path === "/noteDetails";
+  
+  const isNoteDetailsPage = path === "/note";
+  const isArchivedPage = path === "/archive"
+  // console.log(isArchivedPage, "isArchivedPage")
+  // console.log(isNoteDetailsPage, "isNoteDetailsPage")
 
   const {
     createNote,
@@ -282,58 +283,56 @@ const NoteDetails = ({ noteParam }: { noteParam?: string }) => {
 
   if (!accessToken) return null;
 
-  console.log(createNote, "createNote")
-  console.log(noteById, "noteById")
+  // console.log(createNote, "createNote");
+  // console.log(noteById, "noteById");
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="w-full relative ">
       <div className="w-full px-6 pt-5 pb-4   h-full lg:flex flex-col gap-4  border-r border-r-[#CACFD8] min-h-screen    bg-red-500">
-
-          <div
-            className={`${
-              isNoteDetailsPage || createNote || (!createNote && noteById)
-                ? "flex"
-                : "hidden"
-            } flex-grow w-full bg-white flex-col gap-4`}
+        <div
+          className={`${
+            // isNoteDetailsPage  || createNote || (!createNote && noteById)
+            (isNoteDetailsPage && createNote)  || createNote || (!createNote && noteById)
+              ? "flex"
+              : "hidden"
+          } flex-grow w-full bg-white flex-col gap-4`}
         >
-          
-            <GoBack />
-            <div className="w-ful flex flex-col gap-4">
-              <TitleInput
+          <GoBack />
+          <div className="w-ful flex flex-col gap-4">
+            <TitleInput
+              register={register}
+              errors={errors}
+              fieldName={"title"}
+            />
+            <div className="flex flex-col gap-2">
+              <TagInput
                 register={register}
                 errors={errors}
-                fieldName={"title"}
+                fieldName={"tags"}
               />
-              <div className="flex flex-col gap-2">
-                <TagInput
-                  register={register}
-                  errors={errors}
-                  fieldName={"tags"}
-                />
-                <div className="w-full flex items-center ">
-                  <div className="flex gap-[6px] items-center w-[28%] md:w-[19.55%] ">
-                    <Clock />
-                    <p className=" text-xs md:text-sm text-[#2B303B] whitespace-nowrap">
-                      Last edited
-                    </p>
-                  </div>
-                  <div className="w-[72%] md:w-[80.45%]  flex gap-[6px] items-center ">
-                    <p className="text-xs md:text-sm text-[#99A0AE]">
-                      {lastEditedText}
-                    </p>
-                  </div>
+              <div className="w-full flex items-center ">
+                <div className="flex gap-[6px] items-center w-[28%] md:w-[19.55%] ">
+                  <Clock />
+                  <p className=" text-xs md:text-sm text-[#2B303B] whitespace-nowrap">
+                    Last edited
+                  </p>
+                </div>
+                <div className="w-[72%] md:w-[80.45%]  flex gap-[6px] items-center ">
+                  <p className="text-xs md:text-sm text-[#99A0AE]">
+                    {lastEditedText}
+                  </p>
                 </div>
               </div>
-              <div className="border-t border-t-[#E0E4EA] pt-4 flex-grow">
-                <Textarea
-                  register={register}
-                  errors={errors}
-                  fieldName={"content"}
-                />
-              </div>
+            </div>
+            <div className="border-t border-t-[#E0E4EA] pt-4 flex-grow">
+              <Textarea
+                register={register}
+                errors={errors}
+                fieldName={"content"}
+              />
             </div>
           </div>
-
+        </div>
       </div>
       <Footer
         isSubmitting={isSubmitting}
@@ -345,8 +344,3 @@ const NoteDetails = ({ noteParam }: { noteParam?: string }) => {
 };
 
 export default NoteDetails;
-
-
-
-
-

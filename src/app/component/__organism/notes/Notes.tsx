@@ -4,7 +4,7 @@ import Nav from "../nav/Nav";
 import { Plus } from "../../__atoms";
 import Link from "next/link";
 import useManageNotes from "../../../store/notes.store";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useSignInStore } from "@/app/store/sign-in.store";
 import { useUtilities } from "@/app/store/utilities.store";
@@ -13,9 +13,18 @@ import TagNav from "../tagNav/TagNav";
 const Notes = () => {
   const router = useRouter();
   const { accessToken } = useSignInStore();
-  const { allNotes, getNoteById, getAllNotes, toggleCreateNote, createNote } =
+  const { allNotes, getNoteById, getAllNotes, toggleCreateNote, createNote, setNoteById, noteById } =
     useManageNotes();
   const { routeToTags } = useUtilities();
+
+  const path = usePathname();
+  const isNoteDetailsPage = path === "/note";
+  const isArchivedPage = path === "/archive"
+
+  // console.log(isArchivedPage, "isArchivedPage")
+  // console.log(isNoteDetailsPage, "isNoteDetailsPage")
+  console.log(createNote, "createNote")
+  console.log(noteById, "noteById")
 
   useEffect(() => {
     getAllNotes();
@@ -23,6 +32,7 @@ const Notes = () => {
 
   const handleCreate = () => {
     toggleCreateNote();
+    // setNoteById(null)
   };
 
   const handleNoteClick = async (id: string) => {
