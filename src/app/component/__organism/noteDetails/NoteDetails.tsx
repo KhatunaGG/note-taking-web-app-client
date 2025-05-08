@@ -177,7 +177,7 @@ import { useEffect } from "react";
 import { useSignInStore } from "@/app/store/sign-in.store";
 import { useUtilities } from "@/app/store/utilities.store";
 import GoBack from "../goBack/GoBack";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 const createNoteSchema = z.object({
   title: z.string().min(1, "Title cannot be empty"),
@@ -193,30 +193,12 @@ const NoteDetails = ({ noteParam }: { noteParam?: string }) => {
   const { accessToken } = useSignInStore();
   const { formatDate } = useUtilities();
   const path = usePathname();
-  const rout = useRouter()
-  // const isNoteDetailsPage = path === "/noteDetails";
-  
-  const isNoteDetailsPage = path === "/note";
-  const isArchivedPage = path === "/archive"
-  // console.log(isArchivedPage, "isArchivedPage")
-  // console.log(isNoteDetailsPage, "isNoteDetailsPage")
+  const isNotePage = path === "/note";
+  const isNoteDetailsPage = path === "/noteDetails";
+  // const isArchivedPage = path === "/archive";
 
-  const {
-    createNote,
-    createNewNote,
-    success,
-    allNotes,
-    getAllNotes,
-    getNoteById,
-    noteById,
-    setCreateNote,
-  } = useManageNotes();
-
-  // useEffect(() => {
-  //   if (accessToken) {
-  //     getAllNotes();
-  //   }
-  // }, [accessToken, getAllNotes]);
+  const { createNote, createNewNote, getAllNotes, getNoteById, noteById } =
+    useManageNotes();
 
   useEffect(() => {
     if (noteParam) {
@@ -283,21 +265,26 @@ const NoteDetails = ({ noteParam }: { noteParam?: string }) => {
 
   if (!accessToken) return null;
 
-  // console.log(createNote, "createNote");
-  // console.log(noteById, "noteById");
-
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="w-full relative ">
       <div className="w-full px-6 pt-5 pb-4   h-full lg:flex flex-col gap-4  border-r border-r-[#CACFD8] min-h-screen    bg-red-500">
         <div
           className={`${
             // isNoteDetailsPage  || createNote || (!createNote && noteById)
-            (isNoteDetailsPage && createNote)  || createNote || (!createNote && noteById)
+            // (isNoteDetailsPage && createNote)  || createNote || (!createNote && noteById)
+            (isNotePage && createNote) ||
+            createNote ||
+            (!createNote && noteById) ||
+            isNoteDetailsPage
               ? "flex"
               : "hidden"
           } flex-grow w-full bg-white flex-col gap-4`}
         >
-          <GoBack />
+          <GoBack
+            isNoteDetailsPage={isNoteDetailsPage}
+            isNotePage={isNotePage}
+            noteById={noteById}
+          />
           <div className="w-ful flex flex-col gap-4">
             <TitleInput
               register={register}

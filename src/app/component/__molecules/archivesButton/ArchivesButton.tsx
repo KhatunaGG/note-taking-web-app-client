@@ -10,24 +10,30 @@ export type ArchiveButtonPropsType = {
 
 const ArchivesButton = ({ isOverlay }: ArchiveButtonPropsType) => {
   const path = usePathname();
-  const isNoteDetailsPage = path === "/note";
-  console.log(isNoteDetailsPage, "isNoteDetailsPage");
-  const { showModal, noteById, deleteNote, modal, updateNote } = useManageNotes();
-  const { setArchiveModal, archiveModal } = useArchivedNotes();
+  // const isNoteDetailsPage = path === "/note";
+  const { noteById, updateNote } = useManageNotes();
+  const { setArchiveModal } = useArchivedNotes();
 
-  console.log(noteById, "noteById")
   const handleNoteClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    // if (noteById) {
+    //   setArchiveModal(true);
+    // } else if (archiveModal && noteById) {
+    //   updateNote(noteById);
+    // }
 
-    if (noteById) {
+    if (!isOverlay && noteById) {
       setArchiveModal(true);
-    } else if(isOverlay && noteById) {
-        updateNote(noteById)
+    } else if (isOverlay && noteById) {
+      console.log("Updating note from overlay:", noteById);
+      await updateNote(noteById);
     }
   };
+
   return (
     <button
       onClick={handleNoteClick}
+      type="button"
       className={`${
         isOverlay
           ? "bg-[#335CFF] py-3 px-4  rounded-lg text-white"

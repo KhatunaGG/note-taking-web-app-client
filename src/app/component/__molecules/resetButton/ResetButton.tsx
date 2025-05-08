@@ -1,14 +1,22 @@
+"use client";
 import { useArchivedNotes } from "@/app/store/archives.store";
-import useManageNotes from "@/app/store/notes.store";
+import useManageNotes, { NewNoteType } from "@/app/store/notes.store";
+import { useRouter } from "next/navigation";
 import React from "react";
 
-export type DeleteButtonPropsType = {
+export type ResetButtonPropsType = {
   isOverlay?: boolean;
+  isNoteDetailsPage?: boolean;
+  noteById?: NewNoteType | null;
 };
 
-const ResetButton = ({ isOverlay }: DeleteButtonPropsType) => {
-  const { showModal, closeModal, resetNewNote, createNote } = useManageNotes();
+const ResetButton = ({
+  isOverlay,
+  isNoteDetailsPage,
+}: ResetButtonPropsType) => {
+  const { showModal, closeModal, resetNewNote, createNote, noteById } = useManageNotes();
   const { archiveModal, setArchiveModal } = useArchivedNotes();
+  const router = useRouter();
 
   const handleNoteClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -23,6 +31,11 @@ const ResetButton = ({ isOverlay }: DeleteButtonPropsType) => {
       setArchiveModal(false);
     } else if (createNote) {
       resetNewNote();
+    } else if (isNoteDetailsPage) {
+      router.push("/note");
+      resetNewNote();
+    }else if(!createNote && noteById) {
+      router.push("/note");
     }
   };
 
