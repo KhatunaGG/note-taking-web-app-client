@@ -1,11 +1,22 @@
 "use client";
-import { Archives, ArrowLeft, Delete } from "../../__atoms";
+import { ArrowLeft } from "../../__atoms";
 import Link from "next/link";
 import { ArchivesButton, DeleteButton, ResetButton } from "../../__molecules";
-import useManageNotes from "@/app/store/notes.store";
+import useManageNotes, { NewNoteType } from "@/app/store/notes.store";
+import { useArchivedNotes } from "@/app/store/archives.store";
 
-const GoBack = () => {
+export type GoBackPropsType = {
+  isNoteDetailsPage: boolean;
+  isNotePage: boolean;
+  noteById: NewNoteType | null;
+};
+
+const GoBack = ({
+  isNoteDetailsPage,
+  noteById,
+}: GoBackPropsType) => {
   const { resetNewNote } = useManageNotes();
+
   return (
     <div className="w-full pb-3 md:pb-4 flex lg:hidden items-center justify-between border-b border-b-[#E0E4EA] pt-[54px] md:pt-0    ">
       <Link href={"/note"}>
@@ -15,10 +26,12 @@ const GoBack = () => {
         </div>
       </Link>
       <div className="flex gap-4 items-center">
-        <DeleteButton />
-        <ArchivesButton />
-        <ResetButton />
-        {/* <p className="text-[#525866] text-sm">Cancel</p> */}
+        {!isNoteDetailsPage && <DeleteButton />}
+        {!isNoteDetailsPage && <ArchivesButton />}
+        <ResetButton
+          isNoteDetailsPage={isNoteDetailsPage}
+          noteById={noteById}
+        />
         <p className="text-sm  text-[#335CFF]">Save Note</p>
       </div>
     </div>

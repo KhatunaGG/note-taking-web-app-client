@@ -1,6 +1,5 @@
 "use client";
 import Note from "../note/Note";
-import Nav from "../nav/Nav";
 import { Plus } from "../../__atoms";
 import Link from "next/link";
 import useManageNotes from "../../../store/notes.store";
@@ -8,23 +7,20 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useSignInStore } from "@/app/store/sign-in.store";
 import { useUtilities } from "@/app/store/utilities.store";
-import TagNav from "../tagNav/TagNav";
+
 
 const Notes = () => {
-  const router = useRouter();
   const { accessToken } = useSignInStore();
-  const { allNotes, getNoteById, getAllNotes, toggleCreateNote, createNote, setNoteById, noteById } =
-    useManageNotes();
+  const {
+    allNotes,
+    getNoteById,
+    getAllNotes,
+    toggleCreateNote,
+  } = useManageNotes();
   const { routeToTags } = useUtilities();
-
   const path = usePathname();
-  const isNoteDetailsPage = path === "/note";
-  const isArchivedPage = path === "/archive"
-
-  // console.log(isArchivedPage, "isArchivedPage")
-  // console.log(isNoteDetailsPage, "isNoteDetailsPage")
-  console.log(createNote, "createNote")
-  console.log(noteById, "noteById")
+  // const isNoteDetailsPage = path === "/note";
+  const isArchivedPage = path === "/archive";
 
   useEffect(() => {
     getAllNotes();
@@ -40,13 +36,14 @@ const Notes = () => {
     // router.push(`/note/${id}`);
   };
 
+  const filteredNotes = isArchivedPage
+    ? allNotes.filter((note) => note.isArchived === true)
+    : allNotes.filter((note) => note.isArchived !== true);
+
   if (!accessToken) return null;
 
   return (
     <div className="w-full min-h-[calc(100vh-54px)] md:min-h-[calc(100vh-74px)] lg:min-h-[calc(100vh-81px)] bg-green-300">
-      {/* {routeToTags && (
-        <TagNav />
-      )} */}
       <div
         className={`${
           routeToTags && "hidden"
@@ -54,7 +51,7 @@ const Notes = () => {
     lg:border lg:border-[#E0E4EA] rounded-t-xl overflow-hidden lg:rounded-t-[0px]  relative min-h-screen`}
       >
         <h1 className="block font-bold text-[24px] text-[#0E121B] lg:hidden">
-          All Notes
+          {isArchivedPage ? "Archived Notes" : "All Notes"}
         </h1>
 
         <button
@@ -116,8 +113,8 @@ const Notes = () => {
         </button> */}
 
         <div className="w-full flex flex-col md:pb-[114px] lg:pb-[37px]">
-          {allNotes.length > 0 ? (
-            allNotes.map((note) => (
+          {filteredNotes.length > 0 ? (
+            filteredNotes.map((note) => (
               <div
                 key={note._id}
                 className="w-full"

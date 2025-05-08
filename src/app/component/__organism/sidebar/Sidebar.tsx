@@ -107,18 +107,7 @@ const Sidebar = () => {
             </button>
           </Link>
         </div>
-        
         <TagNav />
-        {/* <div className="border-t border-t-[#E0E4EA]">
-          <button className="w-full rounded-lg hover:bg-[#F3F5F8] duration-300 easy-in-out text-[#0E121B] font-semibold text-sm px-[15px] py-[11.5px] flex items-center justify-start gap-2">
-            <Tag width={"20px"} height={"20px"} />
-            <p className="text-sm text-[#0E121B]">Dev</p>
-          </button>
-          <button className="w-full rounded-lg hover:bg-[#F3F5F8] duration-300 easy-in-out text-[#0E121B] font-semibold text-sm px-[15px] py-[11.5px] flex items-center justify-start gap-2">
-            <Tag width={"20px"} height={"20px"} />
-            <p className="text-sm text-[#0E121B]">Fitness</p>
-          </button>
-        </div> */}
       </div>
     </div>
   );

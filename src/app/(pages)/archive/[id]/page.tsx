@@ -1,4 +1,10 @@
-import { Aside, Header, Nav, NoteDetails, Notes } from "@/app/component/__organism";
+import {
+  Aside,
+  Header,
+  Nav,
+  NoteDetails,
+  Notes,
+} from "@/app/component/__organism";
 import React from "react";
 
 export default async function ParamPage({
@@ -28,5 +34,4 @@ export default async function ParamPage({
       <Nav />
     </div>
   );
-  
 }
