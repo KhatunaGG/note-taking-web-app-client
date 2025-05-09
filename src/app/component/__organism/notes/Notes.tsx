@@ -19,8 +19,16 @@ const Notes = () => {
   } = useManageNotes();
   const { routeToTags } = useUtilities();
   const path = usePathname();
-  // const isNoteDetailsPage = path === "/note";
-  const isArchivedPage = path === "/archive";
+
+
+  // const isNotePage = path === "/note";
+  // const isArchivedPage = path === "/archive";
+  const isNoteDetailsPage = path === "/noteDetails";
+  const isNotePage = path.includes("/note");
+  const isArchivedPage = path.includes("archive");
+  // console.log(isNotePage, "isNotePage from Notes")
+
+
 
   useEffect(() => {
     getAllNotes();
@@ -43,7 +51,7 @@ const Notes = () => {
   if (!accessToken) return null;
 
   return (
-    <div className="w-full min-h-[calc(100vh-54px)] md:min-h-[calc(100vh-74px)] lg:min-h-[calc(100vh-81px)] bg-green-300">
+    <div className="w-full min-h-[calc(100vh-54px)] md:min-h-[calc(100vh-74px)] lg:min-h-[calc(100vh-81px)]">
       <div
         className={`${
           routeToTags && "hidden"
@@ -120,8 +128,8 @@ const Notes = () => {
                 className="w-full"
                 onClick={() => handleNoteClick(note._id)}
               >
-                <Link href={`/note/${note._id}`}>
-                  {/* <Link href={`/note`}> */}
+                {/* <Link href={`/note/${note._id}`}> */}
+                <Link href={`${isArchivedPage ? `/archive/${note._id}` : `/note/${note._id}`}`}>
                   <Note
                     title={note.title}
                     tags={note.tags}

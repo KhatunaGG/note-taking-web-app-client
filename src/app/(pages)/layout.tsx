@@ -43,7 +43,6 @@ import "../globals.css";
 import Sidebar from "../component/__organism/sidebar/Sidebar";
 import Overlay from "../component/__organism/overlay/Overlay";
 
-
 export default function MainLayout({
   children,
 }: {
@@ -51,7 +50,7 @@ export default function MainLayout({
 }) {
   return (
     // <div className=" w-full min-h-screen flex  bg-[#F3F5F8] lg:bg-white relative">
-    <div className=" w-full min-h-screen flex   lg:bg-white relative">
+    <div className=" w-full min-h-screen flex lg:bg-white relative">
       <Overlay />
       <div className="lg:w-[18.88%] h-full overflow-y-auto ">
         <Sidebar />

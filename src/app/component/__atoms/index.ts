@@ -11,3 +11,5 @@ export { default as Clock } from "./clock/Clock";
 export { default as Delete } from "./delete/Delete";
 export { default as Plus } from "./plus/Plus";
 export { default as ArrowLeft } from "./arrowLeft/ArrowLeft";
+export { default as Restore } from "./restore/Restore";
+export { default as Status } from "./status/Status";

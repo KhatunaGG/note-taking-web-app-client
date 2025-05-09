@@ -193,9 +193,15 @@ const NoteDetails = ({ noteParam }: { noteParam?: string }) => {
   const { accessToken } = useSignInStore();
   const { formatDate } = useUtilities();
   const path = usePathname();
-  const isNotePage = path === "/note";
   const isNoteDetailsPage = path === "/noteDetails";
+  const isNotePage = path.includes("/note");
+  const isArchivedPage = path.includes("archive");
+
+  // const isNotePage = path === "/note";
   // const isArchivedPage = path === "/archive";
+
+  //   const isNotePage = path.startsWith('/note');
+  // const isArchivedPage = path.startsWith('/archive');
 
   const { createNote, createNewNote, getAllNotes, getNoteById, noteById } =
     useManageNotes();
@@ -267,7 +273,7 @@ const NoteDetails = ({ noteParam }: { noteParam?: string }) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="w-full relative ">
-      <div className="w-full px-6 pt-5 pb-4   h-full lg:flex flex-col gap-4  border-r border-r-[#CACFD8] min-h-screen    bg-red-500">
+      <div className="w-full px-6 pt-5 pb-4   h-full lg:flex flex-col gap-4  border-r border-r-[#CACFD8] min-h-screen">
         <div
           className={`${
             // isNoteDetailsPage  || createNote || (!createNote && noteById)
@@ -284,6 +290,7 @@ const NoteDetails = ({ noteParam }: { noteParam?: string }) => {
             isNoteDetailsPage={isNoteDetailsPage}
             isNotePage={isNotePage}
             noteById={noteById}
+            isArchivedPage={isArchivedPage}
           />
           <div className="w-ful flex flex-col gap-4">
             <TitleInput
