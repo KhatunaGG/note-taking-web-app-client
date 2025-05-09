@@ -88,7 +88,7 @@ const Sidebar = () => {
           <Link href="/note">
             <button
               className={`${activeLink(
-                "/"
+                "/note"
               )} w-full rounded-lg duration-300 ease-in-out text-[#0E121B] font-semibold text-sm px-[15px] py-[11.5px] flex items-center justify-start gap-2`}
             >
               <Home width="20px" height="20px" />
@@ -100,7 +100,7 @@ const Sidebar = () => {
             <button
               className={`${activeLink(
                 "/archive"
-              )} w-full rounded-lg hover:bg-[#F3F5F8] duration-300 easy-in-out text-[#0E121B] font-semibold text-sm px-[15px] py-[11.5px] flex items-center justify-start gap-2`}
+              )} w-full rounded-lg hover:bg-[#f8f3f7] duration-300 easy-in-out text-[#0E121B] font-semibold text-sm px-[15px] py-[11.5px] flex items-center justify-start gap-2`}
             >
               <Archives width={"20px"} height={"20px"} />
               <p className="text-sm text-[#0E121B]">Archived Notes</p>

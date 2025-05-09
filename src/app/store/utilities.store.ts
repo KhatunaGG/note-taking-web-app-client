@@ -45,7 +45,7 @@
 // }));
 
 import { create } from "zustand";
-import { NewNoteType } from "./notes.store";
+import useManageNotes, { NewNoteType } from "./notes.store";
 
 interface IUseUtilities {
   currentPath: string;
@@ -68,7 +68,7 @@ export const useUtilities = create<IUseUtilities>((set, get) => ({
   setCurrentPath: (path) => set({ currentPath: path }),
   activeLink: (path) => {
     const currentPath = get().currentPath;
-    return currentPath === path ? "bg-[#F3F5F8]" : "hover:bg-[#F3F5F8]";
+    return currentPath.includes(path) ? "bg-[#F3F5F8]" : "hover:bg-[#F3F5F8]";
   },
 
   formatDate: (dateString) => {
@@ -81,21 +81,12 @@ export const useUtilities = create<IUseUtilities>((set, get) => ({
   },
 
   getUniqueTags: (notes) => {
-    return Array.from(
-      notes.reduce((tagSet, note) => {
-        note.tags.forEach((tag) => tagSet.add(tag));
-        return tagSet;
-      }, new Set<string>())
-    );
+    const tagSet = new Set<string>();
+    notes.forEach((note) => {
+      note.tags.forEach((tag) => tagSet.add(tag));
+    });
+    return Array.from(tagSet);
   },
-
-  // getUniqueTags: (notes) => {
-  //   const tagSet = new Set<string>();
-  //   notes.forEach((note) => {
-  //     note.tags.forEach((tag) => tagSet.add(tag));
-  //   });
-  //   return Array.from(tagSet);
-  // },
 
   setIsArchivedPage: (isArchived: boolean) =>
     set({ isArchivedPage: isArchived }),

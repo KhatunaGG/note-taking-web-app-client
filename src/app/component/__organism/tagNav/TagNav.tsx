@@ -3,25 +3,28 @@ import { useSignInStore } from "@/app/store/sign-in.store";
 import { Tag } from "../../__atoms";
 import useManageNotes from "@/app/store/notes.store";
 import { useUtilities } from "@/app/store/utilities.store";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { AnimateSpin } from "../../__molecules";
 
 const TagNav = () => {
   const router = useRouter();
-  const { accessToken, initialize, isLoading } = useSignInStore();
+  const path = usePathname();
+  const { accessToken, isLoading } = useSignInStore();
   const { allNotes, getAllNotes } = useManageNotes();
   const { getUniqueTags, routeToTags } = useUtilities();
-  const uniqTags = getUniqueTags(allNotes);
+  const isArchivedPage = path.includes("archive");
+
+  const notesToUse = isArchivedPage
+    ? allNotes.filter((note) => note.isArchived)
+    : allNotes.filter((note) => !note.isArchived);
+  const uniqTags = getUniqueTags(notesToUse);
 
   useEffect(() => {
     if (accessToken) {
       getAllNotes();
     }
   }, [accessToken, router]);
-
-  // console.log(allNotes, "allNotes");
-  // console.log(uniqTags, "uniqTags");
 
   if (isLoading) {
     return <AnimateSpin />;

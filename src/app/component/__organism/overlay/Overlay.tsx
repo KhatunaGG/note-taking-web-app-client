@@ -37,7 +37,7 @@ const Overlay = () => {
                 </div>
               </div>
             </div>
-            <div className="w-full py-4 px-[20px] flex items-center justify-end gap-4 bg-red-300">
+            <div className="w-full py-4 px-[20px] flex items-center justify-end gap-4">
               <ResetButton isOverlay={true} />
               {archiveModal ? (
                 <ArchivesButton isOverlay={true} />

@@ -1,18 +1,20 @@
 "use client";
 import { useArchivedNotes } from "@/app/store/archives.store";
-import { Archives } from "../../__atoms";
+import { Archives, Restore } from "../../__atoms";
 import useManageNotes from "@/app/store/notes.store";
 import { usePathname } from "next/navigation";
 
 export type ArchiveButtonPropsType = {
   isOverlay?: boolean;
+  isArchivedPage?: boolean;
 };
 
-const ArchivesButton = ({ isOverlay }: ArchiveButtonPropsType) => {
+const ArchivesButton = ({ isOverlay, isArchivedPage }: ArchiveButtonPropsType) => {
   const path = usePathname();
-  // const isNoteDetailsPage = path === "/note";
+  // const isArchiePage = path === "/archive";
   const { noteById, updateNote } = useManageNotes();
   const { setArchiveModal } = useArchivedNotes();
+
 
   const handleNoteClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -25,8 +27,10 @@ const ArchivesButton = ({ isOverlay }: ArchiveButtonPropsType) => {
     if (!isOverlay && noteById) {
       setArchiveModal(true);
     } else if (isOverlay && noteById) {
-      console.log("Updating note from overlay:", noteById);
       await updateNote(noteById);
+    } else if(isArchivedPage && noteById) {
+      await updateNote(noteById)
+
     }
   };
 
@@ -41,14 +45,18 @@ const ArchivesButton = ({ isOverlay }: ArchiveButtonPropsType) => {
       }  lg:rounded-lg lg:border lg:border-[#CACFD8] lg:px-4  lg:py-[11.5px] lg:flex lg:items-center lg:justify-start lg:gap-2 cursor-pointer`}
     >
       <div className={`${isOverlay && "hidden"}`}>
-        <Archives width={"20px"} height={"20px"} />
+        {isArchivedPage ? (
+          <Restore width={"20px"} height={"20px"} />
+        ) : (
+          <Archives width={"20px"} height={"20px"} />
+        )}
       </div>
       <p
         className={`${
           isOverlay ? "block text-white" : "hidden lg:flex text-[#0E121B] "
         } text-sm font-medium `}
       >
-        Archive Note
+        {isArchivedPage ? "Restore Note" : "Archive Note"}
       </p>
     </button>
   );

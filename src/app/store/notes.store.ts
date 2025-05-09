@@ -136,7 +136,6 @@ const useManageNotes = create<IUseManageNotes>((set, get) => ({
     } finally {
       set({ isLoading: false });
     }
-
     return false;
   },
 
@@ -244,7 +243,9 @@ const useManageNotes = create<IUseManageNotes>((set, get) => ({
       if (res.status >= 200 && res.status <= 204) {
         await get().getAllNotes();
         useArchivedNotes.getState().setArchiveModal(false);
-        set({ success: true });
+        set({ success: true, noteById: null });
+  
+        // toast.success("Note archived.")
         return true;
       }
     } catch (e) {
