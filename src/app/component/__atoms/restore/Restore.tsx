@@ -30,4 +30,7 @@ const Restore = ({ width, height }: RestorePropsType) => {
   );
 };
 
+
 export default Restore;
+
+

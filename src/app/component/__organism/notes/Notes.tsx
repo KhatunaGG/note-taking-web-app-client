@@ -3,6 +3,7 @@ import Note from "../note/Note";
 import { Plus } from "../../__atoms";
 import Link from "next/link";
 import useManageNotes from "../../../store/notes.store";
+
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useSignInStore } from "@/app/store/sign-in.store";
@@ -24,48 +25,14 @@ const Notes = () => {
     setSelectedTag,
     setIsArchivedPage,
     isTagsPage,
+
     setIsTagsPage,
+
   } = useUtilities();
 
   // useEffect(() => {
   //   if (path.includes("archive")) {
   //     setIsArchivedPage(true);
-  //     setFilterAllByTag(false);
-  //     setSelectedTag(null);
-  //   } else {
-  //     setIsArchivedPage(false);
-  //   }
-  //   if (!path.includes("tags")) {
-  //     setFilterAllByTag(false);
-  //   }
-  //   if (!path.includes("tags") && !path.includes("note")) {
-  //     setSelectedTag(null);
-  //   }
-  // }, [path]);
-
-  // useEffect(() => {
-  //   if (path.includes("archive")) {
-  //     setIsArchivedPage(true);
-  //     if (!selectedTags) {
-  //       setFilterAllByTag(false);
-  //     }
-  //   } else {
-  //     setIsArchivedPage(false);
-  //   }
-  //   setIsTagsPage(path.includes("/tags"));
-  //   if (path.includes("/tags/")) {
-  //     const tagName = path.split("/tags/")[1];
-  //     if (tagName) {
-  //       const decodedTag = decodeURIComponent(tagName);
-  //       setSelectedTag(decodedTag);
-  //       setFilterAllByTag(true);
-  //     }
-  //   }
-  //   else if (!path.includes("tags") && !path.includes("note") && !path.includes("archive")) {
-  //     setFilterAllByTag(false);
-  //     setSelectedTag(null);
-  //   }
-  // }, [path, setIsArchivedPage, setIsTagsPage, setSelectedTag, setFilterAllByTag]);
 
   useEffect(() => {
     if (path.includes("archive")) {
@@ -96,39 +63,50 @@ const Notes = () => {
     setFilterAllByTag,
   ]);
 
+
   useEffect(() => {
     getAllNotes();
   }, []);
+  const notesToRender = getFilteredNotes(allNotes);
 
   const notesToRender = getFilteredNotes(allNotes);
 
   const handleCreate = () => {
     toggleCreateNote();
+    // setNoteById(null)
   };
 
   const handleNoteClick = async (id: string) => {
     await getNoteById(id);
   };
 
+  // const filteredNotes = isArchivedPage
+  //   ? allNotes.filter((note) => note.isArchived === true)
+  //   : allNotes.filter((note) => note.isArchived !== true);
+
   if (!accessToken) return null;
 
   return (
+
     <div className="w-full min-h-[calc(100vh-54px)] md:min-h-[calc(100vh-74px)] lg:min-h-[calc(100vh-81px)] pt-4 lg:pt-0">
       {isTagsPage && selectedTags && (
         <GoBack isTagsPage={isTagsPage}  />
       )}
+
       <div
         className={`${
           routeToTags && "hidden"
         } px-8  lg:pl-8 md:pt-6 lg:pt-[20px] lg:pr-4 flex flex-col 
     lg:border lg:border-[#E0E4EA] rounded-t-xl overflow-hidden lg:rounded-t-[0px]  relative min-h-screen`}
       >
+
         <h1
           className={`${
             isTagsPage
               ? "text-sm font-medium text-[#717784]"
               : "font-bold text-[24px] text-[#0E121B]"
           } block  lg:hidden`}
+
         >
           {isArchivedPage
             ? "Archived Notes"
@@ -139,8 +117,10 @@ const Notes = () => {
 
         <div className="w-full flex-flex-col gap-4">
           <button
+
             onClick={handleCreate}
             className="hidden   transition-transform duration-300 ease-in-out hover:scale-105   w-full bg-[#335CFF] rounded-lg text-white text-sm font-normal py-3 lg:flex items-center justify-center"
+
           >
             + Create New Note
           </button>
@@ -210,6 +190,8 @@ const Notes = () => {
                     ? "No notes have been archived yet. Move notes here for safekeeping, or create a new note."
                     : ""}
                 </p>
+
+       
               </div>
             )}
           </div>

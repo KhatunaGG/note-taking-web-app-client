@@ -8,6 +8,7 @@ import { useSignInStore } from "./sign-in.store";
 import { useArchivedNotes } from "./archives.store";
 
 
+
 export type NewNoteType = {
   title: string;
   content: string;

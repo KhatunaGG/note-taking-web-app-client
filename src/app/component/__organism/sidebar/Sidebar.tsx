@@ -9,6 +9,7 @@ import TagNav from "../tagNav/TagNav";
 
 const Sidebar = () => {
   const pathname = usePathname();
+
   // const { setCurrentPath, activeLink } = useUtilities();
   
   // useEffect(() => {
@@ -25,6 +26,7 @@ const Sidebar = () => {
 
 
 
+
   return (
     <div className="hidden w-full min-h-screen py-3 px-4 lg:flex flex-col gap-4 bg-white">
       <div className="w-full py-4">
@@ -35,7 +37,9 @@ const Sidebar = () => {
         <div className="flex flex-col      ">
           <Link href="/note">
             <button
+
              onClick={() => setSelectedTag(null)}
+
               className={`${activeLink(
                 "/note"
               )} w-full rounded-lg duration-300 ease-in-out text-[#0E121B] font-semibold text-sm px-[15px] py-[11.5px] flex items-center justify-start gap-2`}
@@ -47,7 +51,9 @@ const Sidebar = () => {
 
           <Link href={"/archive"}>
             <button
+
              onClick={() => setSelectedTag(null)}
+
               className={`${activeLink(
                 "/archive"
               )} w-full rounded-lg hover:bg-[#f8f3f7] duration-300 easy-in-out text-[#0E121B] font-semibold text-sm px-[15px] py-[11.5px] flex items-center justify-start gap-2`}

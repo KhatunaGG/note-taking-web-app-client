@@ -30,11 +30,13 @@ const Note = ({
   const formatted = formatDate(lastEdited);
   const pathname = usePathname();
 
+
   useEffect(() => {
     setIsTagsPage(pathname.includes("/tags"));
   }, [pathname]);
 
   // console.log(isTagsPage, "isTagsPage");
+
   // console.log(isArchived, "isArchived");
   return (
     <div

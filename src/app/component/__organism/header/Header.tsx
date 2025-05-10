@@ -11,7 +11,7 @@ const Header = () => {
   const { selectedTags } = useUtilities();
   const path = usePathname();
   const isArchivedPage = path.includes("archive");
-  
+
 
   useEffect(() => {
     (async () => {

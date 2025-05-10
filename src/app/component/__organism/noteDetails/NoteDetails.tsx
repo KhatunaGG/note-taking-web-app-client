@@ -1,4 +1,3 @@
-
 "use client";
 import Footer from "../footer/Footer";
 import { Clock } from "../../__atoms";
@@ -151,6 +150,15 @@ const NoteDetails = ({ noteParam }: { noteParam?: string }) => {
                   </p>
                 </div>
               </div>
+
+            </div>
+            <div className="border-t border-t-[#E0E4EA] pt-4 flex-grow">
+              <Textarea
+                register={register}
+                errors={errors}
+                fieldName={"content"}
+              />
+
             </div>
             <div className="border-t border-t-[#E0E4EA] pt-4 flex-grow">
               <Textarea
