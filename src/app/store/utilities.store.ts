@@ -126,9 +126,11 @@ isTagsPage: false,
   getFilteredNotes: (allNotes) => {
     const { isArchivedPage, selectedTags, filterAllByTag } = get();
     let notes = allNotes;
-    if(filterAllByTag) {
-      notes = allNotes
-    }
+
+    // if(filterAllByTag) {
+    //   notes = allNotes
+    // }
+
   
     if (!filterAllByTag) {
       notes = isArchivedPage
@@ -150,3 +152,8 @@ isTagsPage: false,
 
 
 }));
+
+
+
+
+

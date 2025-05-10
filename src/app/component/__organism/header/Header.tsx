@@ -12,6 +12,7 @@ const Header = () => {
   const path = usePathname();
   const isArchivedPage = path.includes("archive");
 
+
   useEffect(() => {
     (async () => {
       await useSignInStore.getState().initialize();

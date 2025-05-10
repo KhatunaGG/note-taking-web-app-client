@@ -19,19 +19,27 @@ const TagNav = () => {
     setRouteToTags,
     selectedTags,
     setFilterAllByTag,
-    filterAllByTag
+
+    filterAllByTag,
+    isTagsPage,
+    setIsTagsPage,
   } = useUtilities();
   const isArchivedPage = path.includes("archive");
-  const isTagsPage = path.includes("tags");
+
 
   const notesToUse = isArchivedPage
     ? allNotes.filter((note) => note.isArchived)
     : allNotes.filter((note) => !note.isArchived);
   const uniqTags = getUniqueTags(notesToUse);
 
+  useEffect(() => {
+    setIsTagsPage(path.includes("/tags"));
+  }, [path]);
 
-
+  console.log(selectedTags, "selectedTags form TAGSNAV");
   console.log(filterAllByTag, "filterAllByTag form NOTE")
+  console.log(isTagsPage, "isTagsPage form NOTE")
+
 
   useEffect(() => {
     if (accessToken) {
@@ -65,18 +73,35 @@ const TagNav = () => {
               <button
                 // onClick={() => {
                 //   setSelectedTag(uniqTag);
+
+                //   if (isTagsPage) {
+                //     setFilterAllByTag(true);
+                //     router.push(`/tags/${uniqTag}`);
+                //   }
                 // }}
+
 
                 onClick={() => {
                   setSelectedTag(uniqTag);
+                  if (path.includes('tags')) {
 
-                  if (isTagsPage) {
                     setFilterAllByTag(true);
                     router.push(`/tags/${uniqTag}`);
                   }
                 }}
+
+
+
+
+
+
+
                 className={`${isTagsPage && "border-b border-b-[#E0E4EA]"} ${
-                  (selectedTags === uniqTag && !isTagsPage)? "bg-[#F3F5F8]" : "bg-transparent"
+                  selectedTags === uniqTag && !isTagsPage
+                    ? "bg-[#F3F5F8]"
+                    : "bg-transparent"
+
+
                 } w-full rounded-lg hover:bg-[#F3F5F8] pl-[15px] duration-300 easy-in-out text-[#0E121B] font-semibold text-sm  py-[11.5px] flex items-center justify-start gap-2`}
               >
                 <Tag width={"20px"} height={"20px"} />
@@ -90,3 +115,11 @@ const TagNav = () => {
 };
 
 export default TagNav;
+
+
+
+
+
+
+
+
