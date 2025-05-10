@@ -5,7 +5,8 @@ import { ErrorResponse } from "../interface";
 import { toast } from "react-toastify";
 import { axiosInstance } from "../libs/axiosInstance";
 import { useSignInStore } from "./sign-in.store";
-import { Modak } from "next/font/google";
+import { useArchivedNotes } from "./archives.store";
+
 
 export type NewNoteType = {
   title: string;
@@ -66,6 +67,7 @@ export interface IUseManageNotes {
   showModal: () => void;
   closeModal: () => void;
   resetNewNote: () => void;
+  updateNote: (noteById: NewNoteType) => void;
 }
 
 const useManageNotes = create<IUseManageNotes>((set, get) => ({
@@ -95,6 +97,7 @@ const useManageNotes = create<IUseManageNotes>((set, get) => ({
     set({ title, content, tags, isArchived }),
   toggleCreateNote: () =>
     set((state) => ({ createNote: !state.createNote, noteById: null })),
+  // set((state) => ({ createNote: !state.createNote})),
 
   createNewNote: async (formData: NoteType) => {
     set({ isLoading: true, axiosError: "" });
@@ -134,7 +137,6 @@ const useManageNotes = create<IUseManageNotes>((set, get) => ({
     } finally {
       set({ isLoading: false });
     }
-
     return false;
   },
 
@@ -178,9 +180,9 @@ const useManageNotes = create<IUseManageNotes>((set, get) => ({
   closeModal: () => {
     set({ modal: false });
   },
-  
+
   resetNewNote: () => {
-    set({ createNote: false,                noteById: null });
+    set({ createNote: false, noteById: null });
     set({
       title: "",
       content: "",
@@ -191,43 +193,6 @@ const useManageNotes = create<IUseManageNotes>((set, get) => ({
       createNote: false,
     });
   },
-
-  // deleteNote: async (id: string | null): Promise<boolean> => {
-  //   if (id === null) {
-  //     set({ createNote: false });
-  //     set({
-  //       title: "",
-  //       content: "",
-  //       tags: [],
-  //       isArchived: false,
-  //       lastEdited: undefined,
-  //       success: true,
-  //       createNote: false,
-  //     });
-  //     return true;
-  //   }
-
-  //   const accessToken = useSignInStore.getState().accessToken;
-  //   set({ isLoading: true, axiosError: "" });
-
-  //   try {
-  //     const res = await axiosInstance.delete(`note/${id}`, {
-  //       headers: { Authorization: `Bearer ${accessToken}` },
-  //     });
-  //     if (res.status >= 200 && res.status <= 204) {
-  //       set({ noteById: null, success: true });
-  //       return true;
-  //     }
-  //   } catch (e) {
-  //     const errorMessage = handleApiError(e as AxiosError<ErrorResponse>);
-  //     set({ axiosError: errorMessage });
-  //   } finally {
-  //     set({ isLoading: false });
-  //   }
-
-  //   return false;
-  // },
-
 
   deleteNote: async (id: string): Promise<boolean> => {
     const accessToken = useSignInStore.getState().accessToken;
@@ -240,10 +205,10 @@ const useManageNotes = create<IUseManageNotes>((set, get) => ({
         headers: { Authorization: `Bearer ${accessToken}` },
       });
       if (res.status >= 200 && res.status <= 204) {
+        closeModal();
+        getAllNotes();
+        window.location.href = "/note";
         set({ noteById: null, success: true });
-        closeModal()
-        getAllNotes()
-        // window.location.href = "/note";
         return true;
       }
     } catch (e) {
@@ -256,10 +221,44 @@ const useManageNotes = create<IUseManageNotes>((set, get) => ({
     return false;
   },
 
-
-
-
+  updateNote: async (noteById: NewNoteType) => {
+    const accessToken = useSignInStore.getState().accessToken;
+    set({ isLoading: true, axiosError: "" });
+    if (!accessToken) {
+      set({ axiosError: "No access token available" });
+      set({ isLoading: false });
+      return false;
+    }
+    try {
+      const updatedData = {
+        isArchived: !noteById.isArchived,
+        // lastEdited: new Date().toString()
+      };
+      const res = await axiosInstance.patch(
+        `/note/${noteById._id}`,
+        updatedData,
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        }
+      );
+      if (res.status >= 200 && res.status <= 204) {
+        await get().getAllNotes();
+        useArchivedNotes.getState().setArchiveModal(false);
+        set({ success: true, noteById: null });
   
+        // toast.success("Note archived.")
+        return true;
+      }
+    } catch (e) {
+      const errorMessage = handleApiError(e as AxiosError<ErrorResponse>);
+      set({ axiosError: errorMessage });
+    } finally {
+      set({ isLoading: false });
+    }
+
+    return false;
+  },
+
   showModal: () => {
     set({ modal: true });
   },

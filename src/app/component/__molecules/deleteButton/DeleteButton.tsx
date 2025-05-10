@@ -1,36 +1,45 @@
 import useManageNotes from "@/app/store/notes.store";
 import React from "react";
+import { Delete } from "../../__atoms";
 
 export type DeleteButtonPropsType = {
   isOverlay?: boolean;
 };
 
 const DeleteButton = ({ isOverlay }: DeleteButtonPropsType) => {
-  const { showModal, closeModal, resetNewNote, createNote } = useManageNotes();
+  const { showModal, noteById, deleteNote, modal } = useManageNotes();
 
   const handleNoteClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    if (isOverlay) {
-      closeModal();
-    } else if (createNote) {
-      resetNewNote();
-    } else {
-      showModal();
+
+    if (noteById) {
+      await showModal();
+    }
+    if (isOverlay && noteById) {
+      deleteNote(noteById?._id || "");
     }
   };
-
-  const baseClass = "text-sm text-[#525866]";
-  const layoutStyle = "bg-[#F3F5F8] py-3 px-4 rounded-lg";
-  const noteDetailStyle =
-    "bg-transparent py-0 px-0 rounded-none lg:bg-[#F3F5F8] lg:py-3 lg:px-4 lg:rounded-lg";
 
   return (
     <button
       onClick={handleNoteClick}
-      // className="bg-transparent py-0 px-0 rounded-none text-sm text-[#525866] lg:bg-[#F3F5F8]  lg:py-3 lg:px-4 lg:rounded-lg"
-      className={`${baseClass} ${isOverlay ? layoutStyle : noteDetailStyle}`}
+      className={`${
+        isOverlay && modal
+          ? "bg-[#FB3748] py-3 px-4  rounded-lg text-white"
+          : "bg-transparent text-[#0E121B]"
+      }  lg:rounded-lg lg:border lg:border-[#CACFD8] lg:px-4  lg:py-[11.5px] lg:flex lg:items-center lg:justify-start lg:gap-2 cursor-pointer`}
     >
-      Cancel
+      <div className={`${isOverlay && "hidden"}`}>
+        <Delete width={"20px"} height={"20px"} />
+      </div>
+      {/* <p className="hidden text-sm text-[#0E121B] font-medium lg:block"> */}
+      <p
+        className={`${
+          isOverlay ? "block text-white" : "hidden lg:flex text-[#0E121B] "
+        } text-sm font-medium `}
+      >
+        Delete Note
+      </p>
     </button>
   );
 };

@@ -1,27 +1,107 @@
-"use client"
-import { Archives, ArrowLeft, Delete } from "../../__atoms";
+// "use client";
+// import { ArrowLeft } from "../../__atoms";
+// import Link from "next/link";
+// import { ArchivesButton, DeleteButton, ResetButton } from "../../__molecules";
+// import useManageNotes, { NewNoteType } from "@/app/store/notes.store";
+// import { usePathname } from "next/navigation";
+
+// export type GoBackPropsType = {
+//   isNoteDetailsPage: boolean;
+//   isNotePage: boolean;
+//   noteById: NewNoteType | null;
+//   isArchivedPage: boolean;
+// };
+
+// const GoBack = ({
+//   isNoteDetailsPage,
+//   noteById,
+//   isNotePage,
+//   isArchivedPage,
+// }: GoBackPropsType) => {
+//   const { resetNewNote } = useManageNotes();
+//   const path = usePathname();
+
+//   return (
+//     // <div className="w-full pb-3 md:pb-4 flex lg:hidden items-center justify-between border-b border-b-[#E0E4EA] pt-[54px] md:pt-0    ">
+//     <div
+//       className={`${
+//         isNoteDetailsPage ? "pt-0" : "pt-[54px]"
+//       } w-full pb-3 md:pb-4 flex lg:hidden items-center justify-between border-b border-b-[#E0E4EA] md:pt-0`}
+//     >
+//       {/* <Link href={"/note"}> */}
+
+//       <Link href={`${isNotePage ? `/note` : `/archive`}`}>
+//         {/* <Link href={isNotePage ? `/note` : isArchivedPage ? `/archive` : `/`}> */}
+//         <div onClick={resetNewNote} className="flex items-center gap-1">
+//           <ArrowLeft />
+//           <p className="text-sm text-[#525866]">Go Back</p>
+//         </div>
+//       </Link>
+//       <div className="flex gap-4 items-center">
+//         {!isNoteDetailsPage && <DeleteButton />}
+//         {!isNoteDetailsPage && <ArchivesButton isArchivedPage={isArchivedPage} />}
+//         <ResetButton
+//           isNoteDetailsPage={isNoteDetailsPage}
+//           noteById={noteById}
+//         />
+//         <p className="text-sm  text-[#335CFF]">Save Note</p>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default GoBack;
+
+"use client";
+import { ArrowLeft } from "../../__atoms";
 import Link from "next/link";
-import { DeleteButton } from "../../__molecules";
-import useManageNotes from "@/app/store/notes.store";
+import { ArchivesButton, DeleteButton, ResetButton } from "../../__molecules";
+import useManageNotes, { NewNoteType } from "@/app/store/notes.store";
+import { usePathname } from "next/navigation";
 
-const GoBack = () => {
+export type GoBackPropsType = {
+  isNoteDetailsPage?: boolean;
+  isNotePage?: boolean;
+  noteById?: NewNoteType | null;
+  isArchivedPage?: boolean;
 
-  const {resetNewNote} = useManageNotes()
+  isTagsPage?: boolean;
+};
+
+const GoBack = ({
+  isNoteDetailsPage,
+  noteById,
+  isNotePage,
+  isArchivedPage,
+
+  isTagsPage,
+}: GoBackPropsType) => {
+  const { resetNewNote } = useManageNotes();
+  const path = usePathname();
+
   return (
-    <div className="w-full pb-3 md:pb-4 flex lg:hidden items-center justify-between border-b border-b-[#E0E4EA] pt-[54px] md:pt-0    ">
-      <Link href={"/note"}>
-        <div
-        onClick={resetNewNote}
-        className="flex items-center gap-1">
+    // <div className="w-full pb-3 md:pb-4 flex lg:hidden items-center justify-between border-b border-b-[#E0E4EA] pt-[54px] md:pt-0    ">
+    <div
+      className={`${isNoteDetailsPage || isTagsPage ? "pt-0" : "pt-[54px]"} ${
+        isTagsPage && "px-6 mb-4"
+      } w-full pb-3 md:pb-4 flex lg:hidden items-center justify-between border-b border-b-[#E0E4EA] md:pt-0`}
+    >
+      {/* <Link href={`${isNotePage ? `/note` : `/archive`}`}> */}
+      <Link href={isNotePage ? "/note" : isTagsPage ? "/tags" : "/archive"}>
+        <div onClick={resetNewNote} className="flex items-center gap-1">
           <ArrowLeft />
           <p className="text-sm text-[#525866]">Go Back</p>
         </div>
       </Link>
-      <div className="flex gap-4 items-center">
-        <Delete width={"18px"} height={"18px"} />
-        <Archives width={"18px"} height={"18px"} />
-        <DeleteButton />
-        {/* <p className="text-[#525866] text-sm">Cancel</p> */}
+      <div className={`${isTagsPage && "hidden"} flex gap-4 items-center`}>
+        {!isNoteDetailsPage && <DeleteButton />}
+        {!isNoteDetailsPage && (
+          <ArchivesButton isArchivedPage={isArchivedPage} />
+        )}
+        <ResetButton
+          isNoteDetailsPage={isNoteDetailsPage}
+          noteById={noteById}
+        />
         <p className="text-sm  text-[#335CFF]">Save Note</p>
       </div>
     </div>

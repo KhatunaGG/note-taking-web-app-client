@@ -1,5 +1,3 @@
-import React from "react";
-
 const AnimateSpin = () => {
   return (
     <div className="w-full flex justify-center items-center py-10">

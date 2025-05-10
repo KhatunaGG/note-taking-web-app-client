@@ -1,24 +1,33 @@
-"use client"
+"use client";
 import { useEffect } from "react";
 import { Logo, Setting } from "../../__atoms";
 import Search from "../../__atoms/search/Search";
 import { useSignInStore } from "@/app/store/sign-in.store";
-
+import { useUtilities } from "@/app/store/utilities.store";
+import { usePathname } from "next/navigation";
 
 const Header = () => {
-    const { accessToken } = useSignInStore();
-
-    useEffect(() => {
-      (async () => {
-        await useSignInStore.getState().initialize();
-      })();
-    }, []);
+  const { accessToken } = useSignInStore();
+  const { selectedTags } = useUtilities();
+  const path = usePathname();
+  const isArchivedPage = path.includes("archive");
   
-    if(!accessToken) return null
+
+  useEffect(() => {
+    (async () => {
+      await useSignInStore.getState().initialize();
+    })();
+  }, []);
+
+  if (!accessToken) return null;
   return (
     <div className="bg-[#F3F5F8] lg:bg-white px-8 w-full h-[54px] md:h-[74px] lg:h-[81px]  flex items-center justify-between lg:px-[2.78%]  lg:border-b lg:border-l lg:border-[#E0E4EA]">
       <h1 className="font-bold text-[24px] text-[#0E121B] hidden lg:block">
-        All Notes
+        {isArchivedPage
+          ? "Archived Notes"
+          : selectedTags
+          ? `Notes Tagged: ${selectedTags}`
+          : "All Notes"}
       </h1>
       <div className="w-full h-full flex items-center justify-start lg:hidden">
         <Logo />

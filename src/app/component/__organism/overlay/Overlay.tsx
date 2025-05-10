@@ -1,40 +1,49 @@
 "use client";
 import useManageNotes from "@/app/store/notes.store";
-import { Delete } from "../../__atoms";
+import { Archives, Delete } from "../../__atoms";
 import { usePathname } from "next/navigation";
-import { DeleteButton } from "../../__molecules";
+import { ArchivesButton, DeleteButton, ResetButton } from "../../__molecules";
+import { useArchivedNotes } from "@/app/store/archives.store";
 
 const Overlay = () => {
   const path = usePathname();
-  const isOverlay = path === "/overlay";
-  const { modal, deleteNote, noteById } = useManageNotes();
-
+  // const isOverlay = path === "/overlay";
+  const { modal } = useManageNotes();
+  const { archiveModal } = useArchivedNotes();
 
   return (
     <>
-      {modal ? (
+      {modal || archiveModal ? (
         <section className="w-full min-h-screen bg-black/40 fixed inset-0 z-20 flex items-center justify-center">
           <div className=" bg-white  rounded-lg shadow-lg w-[72.21%] md:w-[57.29%] lg:w-[30.55%]">
             <div className="p-[20px] border-b border-b-[#E0E4EA] flex items-start justify-between gap-4">
-              <Delete width={"40px"} height={"40px"} />
-              <div className="flex flex-col gap-[6px]">
-                <h2 className="text-base font-bold text-[#0E121B]">
-                  Delete Note
+              {archiveModal ? (
+                <div className="w-10 h-10 rounded-lg bg-[#F3F5F8] flex items-center justify-center">
+                  <Archives width="24px" height={"25px"} />
+                </div>
+              ) : (
+                <div className="w-10 h-10 rounded-lg bg-[#F3F5F8] flex items-center justify-center">
+                  <Delete width={"24px"} height={"25px"} />
+                </div>
+              )}
+              <div className="flex flex-col gap-[6px] flex-1">
+                <h2 className="text-base font-semibold text-[#0E121B]">
+                  {archiveModal ? "Archive Note" : "Delete Note"}
                 </h2>
-                <div className="text-xs md:text-sm text-[#2B303B]">
-                  Are you sure you want to permanently delete this note? This
-                  action cannot be undone.
+                <div className="text-xs md:text-sm text-[#2B303B] font-normal">
+                  {archiveModal
+                    ? "Are you sure you want to archive this note? You can find it in the Archived Notes section and restore it anytime."
+                    : "Are you sure you want to permanently delete this note? This action cannot be undone."}
                 </div>
               </div>
             </div>
             <div className="w-full py-4 px-[20px] flex items-center justify-end gap-4">
-              <DeleteButton isOverlay={true} />
-              <button
-                onClick={() => deleteNote(noteById?._id || "")}
-                className="bg-[#FB3748] text-sm py-3 px-4 rounded-lg text-white"
-              >
-                Delete Note
-              </button>
+              <ResetButton isOverlay={true} />
+              {archiveModal ? (
+                <ArchivesButton isOverlay={true} />
+              ) : (
+                <DeleteButton isOverlay={true} />
+              )}
             </div>
           </div>
         </section>
