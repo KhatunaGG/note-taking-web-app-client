@@ -1,71 +1,85 @@
-// import { create } from "zustand";
-// import { NewNoteType } from "./notes.store";
-
-// interface IUseUtilities {
-//   currentPath: string;
-//   setCurrentPath: (path: string) => void;
-//   activeLink: (path: string) => string;
-//   formatDate: (dateString: string | Date) => string;
-//   getUniqueTags: (notes: NewNoteType[]) => string[];
-//   routeToTags: boolean;
-//   setRouteToTags: (value: boolean) => void;
-//   handleRoutes: () => void;
-
-// }
-
-// export const useUtilities = create<IUseUtilities>((set, get) => ({
-//   currentPath: "",
-//   routeToTags: false,
-
-//   setCurrentPath: (path) => set({ currentPath: path }),
-//   activeLink: (path) => {
-//     const currentPath = get().currentPath;
-//     return currentPath === path ? "bg-[#F3F5F8]" : "hover:bg-[#F3F5F8]";
-//   },
-
-//   formatDate: (dateString) => {
-//     const date = new Date(dateString);
-//     return date.toLocaleDateString("en-GB", {
-//       day: "2-digit",
-//       month: "short",
-//       year: "numeric",
-//     });
-//   },
-
-//   getUniqueTags: (notes) => {
-//     const tagSet = new Set<string>();
-//     notes.forEach((note) => {
-//       note.tags.forEach((tag) => tagSet.add(tag));
-//     });
-//     return Array.from(tagSet);
-//   },
-
-//   handleRoutes: () => set({ routeToTags: true }),
-//   setRouteToTags: (value: boolean) => set({ routeToTags: value }),
-// }));
-
 import { create } from "zustand";
-import useManageNotes, { NewNoteType } from "./notes.store";
+import { NewNoteType } from "./notes.store"; 
 
 interface IUseUtilities {
   currentPath: string;
   isArchivedPage: boolean;
+  selectedTags: string | null;
+  routeToTags: boolean;
+
+
+
+
+
+
+
+  filterAllByTag: boolean;
+  setFilterAllByTag: (val: boolean) => void;
+
+
+  isAllNotesPage: boolean;
+  setIsAllNotesPage: (val: boolean) => void;
+
+
+
+  isTagsPage: boolean;
+setIsTagsPage: (val: boolean) => void;
+
+
+
+
+
+  setSelectedTag: (tag: string | null) => void;
   setCurrentPath: (path: string) => void;
+  setRouteToTags: (value: boolean) => void;
   activeLink: (path: string) => string;
   formatDate: (dateString: string | Date) => string;
   getUniqueTags: (notes: NewNoteType[]) => string[];
-  routeToTags: boolean;
-  setRouteToTags: (value: boolean) => void;
   handleRoutes: () => void;
-  filteredNotes: (allNotes: NewNoteType[]) => NewNoteType[];
+  getFilteredNotes: (allNotes: NewNoteType[]) => NewNoteType[];
+  setIsArchivedPage: (isArchived: boolean) => void;
 }
 
 export const useUtilities = create<IUseUtilities>((set, get) => ({
   currentPath: "",
   isArchivedPage: false,
+  selectedTags: null,
   routeToTags: false,
 
+
+
+
+
+
+  filterAllByTag: false,
+  setFilterAllByTag: (val) => set({ filterAllByTag: val }),
+
+  
+  
+  isAllNotesPage: false,
+  setIsAllNotesPage: (val) => set({ isAllNotesPage: val }),
+
+
+
+
+isTagsPage: false,
+  setIsTagsPage: (val) => set({isTagsPage: val}),
+
+
+
+
+
+
+
+
+
+
+
   setCurrentPath: (path) => set({ currentPath: path }),
+  setRouteToTags: (value) => set({ routeToTags: value }),
+  setSelectedTag: (tag) => set({ selectedTags: tag }),
+  setIsArchivedPage: (isArchived) => set({ isArchivedPage: isArchived }),
+
   activeLink: (path) => {
     const currentPath = get().currentPath;
     return currentPath.includes(path) ? "bg-[#F3F5F8]" : "hover:bg-[#F3F5F8]";
@@ -88,14 +102,51 @@ export const useUtilities = create<IUseUtilities>((set, get) => ({
     return Array.from(tagSet);
   },
 
-  setIsArchivedPage: (isArchived: boolean) =>
-    set({ isArchivedPage: isArchived }),
   handleRoutes: () => set({ routeToTags: true }),
-  setRouteToTags: (value: boolean) => set({ routeToTags: value }),
-  filteredNotes: (allNotes) => {
-    const { isArchivedPage } = get();
-    return isArchivedPage
-      ? allNotes.filter((note) => note.isArchived === true)
-      : allNotes;
-  },
+
+  // getFilteredNotes: (allNotes) => {
+  //   const { isArchivedPage, selectedTags } = get();
+  //   let notes = isArchivedPage
+  //     ? allNotes.filter((note) => note.isArchived)
+  //     : allNotes.filter((note) => !note.isArchived);
+
+  //   if (selectedTags) {
+  //     notes = notes.filter((note) => note.tags.includes(selectedTags));
+  //   }
+  //   return notes;
+  // },
+
+
+
+
+
+
+
+
+  getFilteredNotes: (allNotes) => {
+    const { isArchivedPage, selectedTags, filterAllByTag } = get();
+    let notes = allNotes;
+    if(filterAllByTag) {
+      notes = allNotes
+    }
+  
+    if (!filterAllByTag) {
+      notes = isArchivedPage
+        ? allNotes.filter((note) => note.isArchived)
+        : allNotes.filter((note) => !note.isArchived);
+    }
+  
+    if (selectedTags) {
+      notes = notes.filter((note) => note.tags.includes(selectedTags));
+    }
+  
+    return notes;
+  }
+  
+
+
+
+
+
+
 }));

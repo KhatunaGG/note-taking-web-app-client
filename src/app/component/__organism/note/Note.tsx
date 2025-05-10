@@ -1,5 +1,7 @@
 "use client";
 import { useUtilities } from "@/app/store/utilities.store";
+import { usePathname } from "next/navigation";
+import { useEffect } from "react";
 
 export type NotePropsType = {
   title: string;
@@ -9,6 +11,7 @@ export type NotePropsType = {
   isArchived: boolean;
   lastEdited: string;
 };
+
 const Note = ({
   title,
   content,
@@ -17,14 +20,16 @@ const Note = ({
   isArchived,
   lastEdited,
 }: NotePropsType) => {
-  const { formatDate } = useUtilities();
+  const { formatDate, filterAllByTag, isTagsPage, setIsTagsPage } = useUtilities();
   const formatted = formatDate(lastEdited);
-  // const formattedDate = new Date(lastEdited).toLocaleDateString("en-GB", {
-  //   day: "2-digit",
-  //   month: "short",
-  //   year: "numeric",
-  // });
+  const pathname = usePathname();
 
+  useEffect(() => {
+    setIsTagsPage(pathname.includes("/tags"));
+  }, [pathname]);
+
+  console.log(isTagsPage, "isTagsPage");
+  // console.log(isArchived, "isArchived");
   return (
     <div
       className={`w-full border-t border-t-[#E0E4EA] p-2 flex flex-col gap-3 border-b border-b-[#E0E4EA]`}
@@ -40,7 +45,12 @@ const Note = ({
           </div>
         ))}
       </div>
-      <p className="text-[#2B303B] text-xs ">{formatted}</p>
+      <div className="w-full flex items-center justify-between">
+        <p className="text-[#2B303B] text-xs ">{formatted}</p>
+        {isTagsPage && isArchived === true && (
+          <p className="text-[#335CFF] text-xs">Archived</p>
+        )}
+      </div>
     </div>
   );
 };

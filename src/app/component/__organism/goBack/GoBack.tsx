@@ -1,5 +1,5 @@
 "use client";
-import { ArrowLeft, Restore } from "../../__atoms";
+import { ArrowLeft } from "../../__atoms";
 import Link from "next/link";
 import { ArchivesButton, DeleteButton, ResetButton } from "../../__molecules";
 import useManageNotes, { NewNoteType } from "@/app/store/notes.store";
