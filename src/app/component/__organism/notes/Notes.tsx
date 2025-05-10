@@ -8,31 +8,52 @@ import { useEffect } from "react";
 import { useSignInStore } from "@/app/store/sign-in.store";
 import { useUtilities } from "@/app/store/utilities.store";
 
-
 const Notes = () => {
   const { accessToken } = useSignInStore();
-  const {
-    allNotes,
-    getNoteById,
-    getAllNotes,
-    toggleCreateNote,
-  } = useManageNotes();
-  const { routeToTags } = useUtilities();
+  const { allNotes, getNoteById, getAllNotes, toggleCreateNote } =
+    useManageNotes();
+  const { routeToTags, setFilterAllByTag } = useUtilities();
   const path = usePathname();
-
-
-  // const isNotePage = path === "/note";
-  // const isArchivedPage = path === "/archive";
   const isNoteDetailsPage = path === "/noteDetails";
   const isNotePage = path.includes("/note");
   const isArchivedPage = path.includes("archive");
-  // console.log(isNotePage, "isNotePage from Notes")
+  const {
+    selectedTags,
+    getFilteredNotes,
+    setSelectedTag,
+    setIsArchivedPage,
+    isTagsPage,
+  } = useUtilities();
 
+  // useEffect(() => {
+  //   if (path.includes("archive")) {
+  //     setIsArchivedPage(true);
+  //   } else {
+  //     setIsArchivedPage(false);
+  //   }
+  //   setSelectedTag(null);
+  // }, [path]);
 
+  useEffect(() => {
+    if (path.includes("archive")) {
+      setIsArchivedPage(true);
+      setFilterAllByTag(false);
+      setSelectedTag(null);
+    } else {
+      setIsArchivedPage(false);
+    }
+    if (!path.includes("tags")) {
+      setFilterAllByTag(false);
+    }
+    if (!path.includes("tags") && !path.includes("note")) {
+      setSelectedTag(null);
+    }
+  }, [path]);
 
   useEffect(() => {
     getAllNotes();
   }, []);
+  const notesToRender = getFilteredNotes(allNotes);
 
   const handleCreate = () => {
     toggleCreateNote();
@@ -44,9 +65,9 @@ const Notes = () => {
     // router.push(`/note/${id}`);
   };
 
-  const filteredNotes = isArchivedPage
-    ? allNotes.filter((note) => note.isArchived === true)
-    : allNotes.filter((note) => note.isArchived !== true);
+  // const filteredNotes = isArchivedPage
+  //   ? allNotes.filter((note) => note.isArchived === true)
+  //   : allNotes.filter((note) => note.isArchived !== true);
 
   if (!accessToken) return null;
 
@@ -58,13 +79,20 @@ const Notes = () => {
         } px-8 pt-[20px] lg:pl-8 md:pt-6 lg:pt-[20px] lg:pr-4 flex flex-col gap-4 
     lg:border lg:border-[#E0E4EA] rounded-t-xl overflow-hidden lg:rounded-t-[0px]  relative min-h-screen`}
       >
-        <h1 className="block font-bold text-[24px] text-[#0E121B] lg:hidden">
-          {isArchivedPage ? "Archived Notes" : "All Notes"}
+        <h1 className={`${isTagsPage ? "text-sm font-medium text-[#717784]" : "font-bold text-[24px] text-[#0E121B]"} block  lg:hidden`}>
+          {isArchivedPage
+            ? "Archived Notes"
+            : isTagsPage
+            ? `Notes Tagged: ${
+                Array.isArray(selectedTags)
+                  ? selectedTags.join(", ")
+                  : selectedTags
+              }`
+            : "All Notes"}
         </h1>
-
         <button
           onClick={handleCreate}
-          className="hidden w-full bg-[#335CFF] rounded-lg text-white text-sm font-normal py-3 lg:flex items-center justify-center"
+          className="hidden   transition-transform duration-300 ease-in-out hover:scale-105   w-full bg-[#335CFF] rounded-lg text-white text-sm font-normal py-3 lg:flex items-center justify-center"
         >
           + Create New Note
         </button>
@@ -76,7 +104,7 @@ const Notes = () => {
             className=" bg-green-600 text-white text-sm font-normal  
         fixed right-8 bottom-[90px] h-[48px] w-[48px]
        md:h-[64px] md:w-[64px] rounded-full 
-       items-center justify-center lg:hidden"
+       items-center justify-center lg:hidden  "
           >
             <div className="w-full flex items-center justify-center gap-1">
               <Plus />
@@ -121,15 +149,21 @@ const Notes = () => {
         </button> */}
 
         <div className="w-full flex flex-col md:pb-[114px] lg:pb-[37px]">
-          {filteredNotes.length > 0 ? (
-            filteredNotes.map((note) => (
+          {notesToRender.length > 0 ? (
+            notesToRender.map((note) => (
               <div
                 key={note._id}
                 className="w-full"
                 onClick={() => handleNoteClick(note._id)}
               >
                 {/* <Link href={`/note/${note._id}`}> */}
-                <Link href={`${isArchivedPage ? `/archive/${note._id}` : `/note/${note._id}`}`}>
+                <Link
+                  href={`${
+                    isArchivedPage
+                      ? `/archive/${note._id}`
+                      : `/note/${note._id}`
+                  }`}
+                >
                   <Note
                     title={note.title}
                     tags={note.tags}
