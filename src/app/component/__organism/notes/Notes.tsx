@@ -69,7 +69,7 @@ const Notes = () => {
   }, []);
   const notesToRender = getFilteredNotes(allNotes);
 
-  const notesToRender = getFilteredNotes(allNotes);
+
 
   const handleCreate = () => {
     toggleCreateNote();

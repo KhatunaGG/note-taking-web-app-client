@@ -13,6 +13,7 @@ const Aside = () => {
 
   return (
     <div className="w-full  pl-4 py-[20px] flex flex-col gap-3">
+      <h1>HELLO WORLD</h1>
       <ArchivesButton isArchivedPage={isArchivedPage} />
       <DeleteButton />
     </div>
